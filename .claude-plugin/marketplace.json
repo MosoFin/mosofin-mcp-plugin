@@ -32,7 +32,7 @@
         "source": "url",
         "url": "https://github.com/mosofin/mosofin-finance-skills.git",
         "ref": "v0.1.0",
-        "sha": "ed7f46e08624479062ac0fb7ae4088ec6c1f4881"
+        "sha": "f39f0d51fece4c73e7c449611e8d146b219d57bf"
       },
       "description": "Finance skills that read your live books through MosoFin: journal entries, three-way match, duplicate detection, GL coding, expense review, bank reconciliation, month-end close, financial statements, AR aging. Requires an active MosoFin subscription. Read-only \u2014 every output is a proposal for a person to post.",
       "version": "0.1.0",
