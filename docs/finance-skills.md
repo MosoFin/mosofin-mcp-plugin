@@ -28,8 +28,8 @@ The second entry is the whole integration:
   "source": {
     "source": "url",
     "url": "https://github.com/mosofin/mosofin-finance-skills.git",
-    "ref": "v0.1.0",
-    "sha": "f39f0d51fece4c73e7c449611e8d146b219d57bf"
+    "ref": "v0.2.0",
+    "sha": "15beef275fb16c1b9774c54f42c0416ddf1210dd"
   }
 }
 ```
@@ -92,7 +92,7 @@ Verify the pin resolves to what you intend before merging:
 
 ```bash
 # the ^{} line is the commit the tag points at — that is the value for "sha"
-git ls-remote https://github.com/mosofin/mosofin-finance-skills.git 'refs/tags/v0.1.0*'
+git ls-remote https://github.com/mosofin/mosofin-finance-skills.git 'refs/tags/v0.2.0*'
 ```
 
 ## What is in the finance plugin
