@@ -9,7 +9,7 @@ the workspace you confirm.
 ### Claude Code
 
 ```text
-/plugin marketplace add mosofin/mosofin-llm-plugins
+/plugin marketplace add mosofin/mosofin-plugins
 /plugin install mosofin@financehub
 ```
 
@@ -61,6 +61,28 @@ plugin as above.
 | `/mosofin:replay-skill` | Replay a saved skill after you confirm |
 | `/mosofin:query-workspace` | Any open data question, end to end |
 | `/mosofin:save-skill` | Save a proven workflow after results exist |
+
+## Finance skills (separate repo)
+
+The accounting skills are **not in this repo**. They live in
+[mosofin/mosofin-finance-skills](https://github.com/mosofin/mosofin-finance-skills)
+and are published through this marketplace as a second plugin:
+
+```text
+/plugin marketplace add mosofin/mosofin-plugins
+/plugin install mosofin-finance@financehub
+```
+
+That installs ten read-only accounting procedures — month-end close, bank
+reconciliation, journal entries, GL coding, financial statements, AR aging,
+invoice extraction, three-way match, duplicate detection, expense review — which
+read your live books through the MosoFin connection this plugin provides. They
+require an active MosoFin subscription; setup is at
+[docs.mosofin.com](https://docs.mosofin.com/start-here/quickstart).
+
+`mosofin` and `mosofin-finance` install independently. How the two repos are
+wired together, and how to cut a finance-skills release, is documented in
+[`docs/finance-skills.md`](./docs/finance-skills.md).
 
 ## License
 
