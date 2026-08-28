@@ -84,6 +84,28 @@ require an active MosoFin subscription; setup is at
 wired together, and how to cut a finance-skills release, is documented in
 [`docs/finance-skills.md`](./docs/finance-skills.md).
 
+## Public workflow resources
+
+- [Financial review prompt library](docs/financial-review-prompt-library.md) — starting prompts for P&L review, cash questions, A/R exceptions, multi-client work, and selected-company analysis.
+- [Implementation notes](docs/implementation-notes.md) — the workspace, permission, source-grounding, and human-review decisions behind the plugin.
+- [Multi-client month-end review checklist](https://www.mosofin.com/multi-client-quickbooks-month-end-review-checklist) — public web checklist plus printable PDF, editable workbook, and prompt pack.
+
+These resources are examples, not accounting conclusions. Confirm the workspace,
+company, period, basis, and available source coverage before a run. MosoFin tools
+are read-only; the responsible person reviews the support and owns every decision,
+correction, communication, and sign-off.
+
+## Contributing
+
+Issues and pull requests are welcome for documentation fixes, additional
+read-only review patterns, and improvements to this connector plugin. Financial
+skill implementations belong in the separate `mosofin-finance-skills`
+repository linked above. Keep examples synthetic, state required source
+coverage, separate facts from assumptions, and do not add instructions that
+post, send, pay, reconcile, or otherwise change source records. For a new
+workflow, include its audience, required inputs, expected output, review
+checkpoints, and failure behavior.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
