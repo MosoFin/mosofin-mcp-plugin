@@ -60,7 +60,7 @@ source pinned to a full commit SHA. Nothing from this repo is vendored there.
   "version": "0.4.0",
   "author": { "name": "MosoFin", "email": "support@mosofin.com" },
   "keywords": ["mosofin", "mcp", "integrations", "oauth", "automation", "productivity", "finance"],
-  "domains": ["mosofin.com", "mcp.mosofin.com", "docs.mosofin.com"]
+  "domains": ["mosofin.com", "app.mosofin.com", "mcp.mosofin.com", "docs.mosofin.com"]
 }
 ```
 
