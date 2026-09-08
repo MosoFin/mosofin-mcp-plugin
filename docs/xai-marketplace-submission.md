@@ -1,5 +1,8 @@
 # Submitting MosoFin to the xAI plugin marketplace
 
+> **Status:** submitted as [xai-org/plugin-marketplace#623](https://github.com/xai-org/plugin-marketplace/pull/623)
+> (vendored under `external_plugins/mosofin`, from upstream commit `d8990ba`).
+
 The [xAI plugin marketplace](https://github.com/xai-org/plugin-marketplace) is an
 index, not a host. Submitting means opening a PR that adds **one entry** to
 `.grok-plugin/marketplace.json` in that repo, pointing at this repo as a remote
