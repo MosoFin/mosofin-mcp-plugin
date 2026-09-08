@@ -1,0 +1,69 @@
+{
+  "name": "financehub",
+  "description": "FinanceHub marketplace by MosoFin: the mosofin plugin connecting AI assistants to workspace-scoped, read-only financial data.",
+  "owner": {
+    "name": "MosoFin",
+    "url": "https://mosofin.com",
+    "email": "support@mosofin.com"
+  },
+  "plugins": [
+    {
+      "name": "mosofin",
+      "source": "./",
+      "description": "Connect your AI assistant to MosoFin: authenticated, workspace-scoped, read-only financial data across connected SaaS platforms.",
+      "category": "finance",
+      "version": "0.4.0",
+      "author": {
+        "name": "MosoFin",
+        "email": "support@mosofin.com"
+      },
+      "homepage": "https://mosofin.com",
+      "license": "MIT",
+      "keywords": [
+        "mosofin",
+        "mcp",
+        "integrations",
+        "oauth",
+        "automation",
+        "productivity",
+        "finance"
+      ],
+      "domains": [
+        "mosofin.com",
+        "mcp.mosofin.com",
+        "docs.mosofin.com"
+      ]
+    },
+    {
+      "name": "mosofin-finance",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/mosofin/mosofin-finance-skills.git",
+        "ref": "v0.3.0",
+        "sha": "6f428ff32c79b9994511604bb4e2dc66da5cc619"
+      },
+      "description": "Finance skills that read your live books through MosoFin: journal entries, three-way match, duplicate detection, GL coding, expense review, bank reconciliation, month-end close, financial statements, AR aging. Requires an active MosoFin subscription. Read-only — every output is a proposal for a person to post.",
+      "category": "finance",
+      "version": "0.3.0",
+      "author": {
+        "name": "MosoFin",
+        "email": "support@mosofin.com"
+      },
+      "homepage": "https://mosofin.com",
+      "license": "AGPL-3.0-only",
+      "keywords": [
+        "finance",
+        "accounting",
+        "bookkeeping",
+        "month-end-close",
+        "reconciliation",
+        "journal-entry",
+        "mosofin"
+      ],
+      "domains": [
+        "mosofin.com",
+        "docs.mosofin.com"
+      ]
+    }
+  ]
+}

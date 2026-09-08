@@ -9,9 +9,9 @@ source pinned to a full commit SHA. Nothing from this repo is vendored there.
 
 | Requirement (xAI `CONTRIBUTING.md`) | Status here |
 |---|---|
-| Valid plugin manifest | `.claude-plugin/plugin.json` — explicitly accepted for Claude-ecosystem plugins, alongside `.grok-plugin/plugin.json` |
+| Valid plugin manifest | `.grok-plugin/plugin.json` (Grok-native) and `.claude-plugin/plugin.json` (Claude Code) — identical content; keep both in sync when bumping version |
 | `README.md` + `homepage` | `README.md`; `homepage: https://mosofin.com` |
-| Clear description, brand-scoped `keywords` / `domains`, `category` | Set on both entries in `.claude-plugin/marketplace.json` |
+| Clear description, brand-scoped `keywords` / `domains`, `category` | Set on both entries in `.grok-plugin/marketplace.json` (mirrored in `.claude-plugin/marketplace.json`) |
 | License stated | MIT ([LICENSE](../LICENSE)); `mosofin-finance` is AGPL-3.0-only in its own repo |
 | Remote sources pinned to a 40-char lowercase SHA | The `mosofin-finance` entry is pinned; `python3 scripts/validate-catalog.py` from the xAI repo passes against `.claude-plugin/marketplace.json` |
 | Official org source, not a personal account | `github.com/MosoFin/mosofin-mcp-plugin` |
