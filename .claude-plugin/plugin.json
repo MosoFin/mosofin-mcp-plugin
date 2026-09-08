@@ -19,5 +19,6 @@
     "productivity",
     "finance"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "logo": "assets/logo.svg"
 }
