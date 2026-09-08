@@ -15,7 +15,9 @@ source pinned to a full commit SHA. Nothing from this repo is vendored there.
 | License stated | MIT ([LICENSE](../LICENSE)); `mosofin-finance` is AGPL-3.0-only in its own repo |
 | Remote sources pinned to a 40-char lowercase SHA | The `mosofin-finance` entry is pinned; `python3 scripts/validate-catalog.py` from the xAI repo passes against `.claude-plugin/marketplace.json` |
 | Official org source, not a personal account | `github.com/MosoFin/mosofin-mcp-plugin` |
-| Security expectations | Disclosed in [README → Security and network access](../README.md#security-and-network-access): one HTTPS MCP endpoint, OAuth in browser, read-only, no scripts/hooks/binaries, no telemetry |
+| Security expectations | Disclosed in [README → Security and network access](../README.md#security-and-network-access): one hardcoded HTTPS MCP endpoint, OAuth in browser, read-only, no scripts/hooks/binaries, no telemetry |
+| Portable `.mcp.json` | Production URL is literal — no `${user_config.*}` substitution, which only Claude Code expands |
+| `generate-plugin-index.py` sees the components | Dry run against this repo indexes 8 skills, 1 agent, 1 HTTP MCP server |
 
 ## Steps
 

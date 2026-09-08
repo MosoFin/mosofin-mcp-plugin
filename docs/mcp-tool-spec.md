@@ -44,7 +44,7 @@ Canonical copy also lives in the MCP server repo as
 | Env | MCP URL (Streamable HTTP) |
 |-----|---------------------------|
 | Production | `https://mcp.mosofin.com/mcp` |
-| Staging / tunnel | Plugin `userConfig.mcp_url` |
+| Staging / tunnel | Add as a separate MCP server in your host; the plugin ships production only |
 
 OAuth 2.0 DCR + PKCE. The plugin ships **no** client id, secret, or JWT keys.
 The MCP host registers itself. First use opens a browser.

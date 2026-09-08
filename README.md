@@ -116,7 +116,7 @@ Declared for marketplace review (per the xAI marketplace
 
 | Item | Detail |
 |---|---|
-| Network endpoints | `https://mcp.mosofin.com/mcp` only (overridable via the `mcp_url` user config, for tunnel/staging testing). |
+| Network endpoints | `https://mcp.mosofin.com/mcp` only, hardcoded in `.mcp.json`. No user-configurable URL. |
 | Credentials | OAuth sign-in completed in the browser; tokens are held by the MCP client. The plugin never reads `.env`, `~/.ssh`, or environment secrets. |
 | Data access | Read-only, scoped to the one workspace you confirm in the chat. No write, post, pay, or reconcile operations. |
 | Executable code | None. The plugin ships `SKILL.md` text, one agent definition, and an `.mcp.json` pointing at the HTTP server — no scripts, binaries, hooks, or install steps. |

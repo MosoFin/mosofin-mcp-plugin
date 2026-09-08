@@ -2,7 +2,7 @@
   "mcpServers": {
     "mosofin": {
       "type": "http",
-      "url": "${user_config.mcp_url}"
+      "url": "https://mcp.mosofin.com/mcp"
     }
   }
 }

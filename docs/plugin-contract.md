@@ -13,7 +13,7 @@ tools. This contract is the short stability/auth summary.
 | Environment | MCP URL (Streamable HTTP) | Auth |
 |-------------|---------------------------|------|
 | Production | `https://mcp.mosofin.com/mcp` | OAuth 2.0 DCR + PKCE at `https://auth.mosofin.com` |
-| Staging / local tunnel | Set plugin `userConfig.mcp_url` (or `MOSOFIN_MCP_URL` on the server) | Same OAuth; metadata must advertise the URL currently served |
+| Staging / local tunnel | Not via the plugin — add the tunnel URL as a separate MCP server in your host (or `MOSOFIN_MCP_URL` on the server side) | Same OAuth; metadata must advertise the URL currently served |
 
 The MCP host (Claude Code, Grok Build, ChatGPT, …) registers itself as an
 OAuth client through dynamic client registration. The plugin ships **no** client
