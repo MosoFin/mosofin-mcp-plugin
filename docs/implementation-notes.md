@@ -13,15 +13,15 @@ not bundle a financial database or copy customer records into this repository.
 
 ## Current product boundary
 
-- QuickBooks Online is the live data source today.
+- Connected accounting platforms are the live financial data source.
 - MosoFin tools exposed by this plugin are read-only except for the explicit,
   consent-gated ability to save a proven MosoFin skill.
 - Read-only means the financial tools do not create, update, delete, post, send,
-  pay, reconcile, or otherwise change QuickBooks records.
+  pay, reconcile, or otherwise change financial records in the connected source.
 - MosoFin supports questions across deliberately selected workspaces; it does
   not claim a released formal consolidation, forecasting, board-pack, scheduled
   distribution, or write-back accounting workflow.
-- Claude or another MCP client prepares the conversation and analysis. The
+- The AI assistant (Claude, Grok, ChatGPT, or another MCP client) prepares the conversation and analysis. The
   responsible person checks the support and owns the final judgment.
 
 ## Why workspace confirmation comes first

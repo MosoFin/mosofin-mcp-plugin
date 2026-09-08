@@ -1,6 +1,6 @@
 ---
 name: list-tools
-description: Show which MosoFin API operations are available for a connected datasource and their policy (maps to the get_datasource_tools MCP tool). Use when the user asks what data can be pulled, which QuickBooks operations exist, or whether an operation is allowed.
+description: Show which MosoFin API operations are available for a connected datasource and their policy (maps to the get_datasource_tools MCP tool). Use when the user asks what data can be pulled, which financial data operations exist, or whether an operation is allowed.
 allowed-tools:
   - mcp__plugin_mosofin_mosofin__list_workspaces
   - mcp__plugin_mosofin_mosofin__get_agent_datasources
@@ -19,7 +19,7 @@ inner operations like `search_invoices` are never top-level MCP tools, and a
 If MosoFin tools are absent or a call returns `Unknown tool`: never say
 "refresh/reconnect". Give ChatGPT/Codex setup: Settings → Apps & Connectors
 → create MosoFin at `https://mcp.mosofin.com/mcp` with OAuth → sign in → new
-chat with MosoFin on. Claude Code: install `mosofin@financehub`. Do not invent
+chat with MosoFin on. Claude Code / Grok Build: install `mosofin@financehub`. Do not invent
 catalog entries.
 
 ## Steps

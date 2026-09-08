@@ -1,6 +1,7 @@
 # MosoFin MCP tool spec — for the mosofin-plugin code agent
 
-> **Audience:** The Claude Code plugin agent in `mosofin-plugin` (skills
+> **Audience:** The plugin agent in `mosofin-mcp-plugin` — Claude Code, Grok
+> Build, or any MCP host (skills
 > `/mosofin:query-workspace` and `/mosofin:save-skill`).
 > **Source of truth:** Live `@mcp.tool()` handlers in this MCP server repo
 > (`app/mcp/tools.py`, `app/mcp/skills/tools.py`). Locked by
@@ -10,7 +11,7 @@
 
 This document tells the plugin agent **exactly which MCP tools exist, when to
 call them, what to pass, what comes back, and what never to do**. Plugin skills
-hardcode Claude Code namespaced ids; the MCP server registers **bare function
+hardcode host-namespaced ids; the MCP server registers **bare function
 names**.
 
 Companion (short): [`plugin-contract.md`](./plugin-contract.md).
@@ -26,7 +27,7 @@ Canonical copy also lives in the MCP server repo as
 | Answer a books / P&L / invoice question | Follow **Workflow A** then call `invoke_datasource_api_tool` |
 | List or replay a saved skill | Follow **Workflow B** |
 | Save a proven workflow | Follow **Workflow C** (consent after results) |
-| Discover inner QuickBooks operations | `get_datasource_tools` — never invent `tool_name` |
+| Discover inner data-source operations | `get_datasource_tools` — never invent `tool_name` |
 | Recover from an error | Jump to [§8 Error catalog](#8-error-catalog) |
 
 **Hard rule:** Call only the 7 live tools. Do not call parked tools
@@ -46,7 +47,7 @@ Canonical copy also lives in the MCP server repo as
 | Staging / tunnel | Plugin `userConfig.mcp_url` |
 
 OAuth 2.0 DCR + PKCE. The plugin ships **no** client id, secret, or JWT keys.
-Claude Code registers itself. First use opens a browser.
+The MCP host registers itself. First use opens a browser.
 
 Every `tools/call` carries `Authorization: Bearer <access_token>`. Identity
 (`user_id`) and optional workspace claims come from the JWT. Never pass
@@ -56,12 +57,13 @@ Production MCP is **stateless + JSON**. Native elicit pickers often do not
 appear. Ask in chat, then pass handles / `confirmed="yes"` / `approved=true`
 explicitly.
 
-### 1.2 Registered names vs Claude Code ids
+### 1.2 Registered names vs host-namespaced ids
 
-FastMCP registers **bare names** (no `mosofin_` prefix). Claude Code namespaces
+FastMCP registers **bare names** (no `mosofin_` prefix). Plugin hosts such as
+Claude Code and Grok Build namespace
 them because plugin `name` = `mosofin` and MCP server key = `mosofin`.
 
-| MCP `tools/list` name | Claude Code callable id |
+| MCP `tools/list` name | Host callable id |
 |-----------------------|-------------------------|
 | `list_workspaces` | `mcp__plugin_mosofin_mosofin__list_workspaces` |
 | `get_agent_datasources` | `mcp__plugin_mosofin_mosofin__get_agent_datasources` |
@@ -71,7 +73,7 @@ them because plugin `name` = `mosofin` and MCP server key = `mosofin`.
 | `get_my_skill` | `mcp__plugin_mosofin_mosofin__get_my_skill` |
 | `create_skill` | `mcp__plugin_mosofin_mosofin__create_skill` |
 
-In examples below, `name` is the **MCP registered name**. In Claude Code, use
+In examples below, `name` is the **MCP registered name**. In a plugin host, use
 the namespaced id.
 
 ### 1.3 Identity and handles (never leak internals)
@@ -88,12 +90,12 @@ multi-entity) on **every** follow-up call, including retries.
 
 ### 1.4 Read-only product boundary
 
-MosoFin cannot create, update, send, or delete records in QuickBooks or any
-other SaaS. Write-capable catalog operations are filtered out before policy.
+MosoFin cannot create, update, send, or delete records in any connected
+accounting platform or other SaaS. Write-capable catalog operations are filtered out before policy.
 `create_skill` is the only additive write: it saves a **private skill bundle**,
 not accounting data.
 
-Annotations (ChatGPT / Claude review):
+Annotations (host review):
 
 | Tool | readOnly | openWorld | destructive |
 |------|----------|-----------|-------------|
@@ -295,7 +297,7 @@ This is the counterpart to `get_datasource_tools` (static “what is possible”
 
 #### Agent rules
 
-- Two connected QuickBooks rows → **ask which company by display_name**. Do not
+- Two connected rows for one platform → **ask which company by display_name**. Do not
   invoke until they choose. Pass that row’s `data_source_id` on every later
   `get_datasource_tools` and `invoke_datasource_api_tool`.
 - Exactly one connected row for the platform → use it; naming it in the answer
@@ -405,7 +407,7 @@ turn).
 | `data_source_id` | O* | `""` | Required when multiple live companies. Pass on **every** retry. |
 | `approved` | O | `false` | `true` only after explicit user yes on a `permission` policy tool. |
 
-#### Date rules (QuickBooks)
+#### Date rules (accounting data sources)
 
 Resolve relative phrases **before** invoking (`last month` → concrete ISO dates).
 
@@ -650,7 +652,7 @@ version. (`update_skill` is parked.)
   "name": "create_skill",
   "arguments": {
     "name": "monthly-margin-review",
-    "description": "Use when the user asks for last month's gross margin, P&L, and top expenses for a confirmed QuickBooks company.",
+    "description": "Use when the user asks for last month's gross margin, P&L, and top expenses for a confirmed company.",
     "destination": "mosofin",
     "confirmed": "yes",
     "workspace_id": "ws_RVKLMvq",
@@ -665,13 +667,13 @@ If `claude` is in destinations, `claude_bundle` is present for local install.
 
 ---
 
-## 4. Inner QuickBooks operations (via invoke only)
+## 4. Inner data-source operations (via invoke only)
 
 These are **not** MCP tools. Pass them as `tool_name` after
 `get_datasource_tools`. Prefer the live menu over this list; the menu is the
 product owner’s source of truth and is ACTIVE-gated.
 
-Common live QBO readers (catalog snapshot; 69 read tools):
+Common live accounting readers (`quickbooks` catalog snapshot; 69 read tools):
 
 **Reports:** `get_profit_and_loss`, `get_balance_sheet`, `get_cash_flow`,
 `get_trial_balance`, `get_general_ledger`, `get_aged_receivables`,
@@ -690,7 +692,7 @@ Common live QBO readers (catalog snapshot; 69 read tools):
 
 Other catalog platforms (Stripe, Xero, Shopify, …) may still be
 `mock: true` until wired live. Always check `mock` before telling the user
-numbers are real. v1 live emphasis: **QuickBooks Online**.
+numbers are real. Live coverage depends on what is connected in the workspace.
 
 ---
 
@@ -701,7 +703,7 @@ numbers are real. v1 live emphasis: **QuickBooks Online**.
 1. `list_workspaces()` → two workspaces. Ask single vs multi; user says Acme.
 2. `list_workspaces(workspace_ids=["ws_RVKLMvq"], mode="single")`.
 3. Confirm name in chat; wait for yes.
-4. `get_agent_datasources(workspace_id="ws_RVKLMvq")` → two QBO companies.
+4. `get_agent_datasources(workspace_id="ws_RVKLMvq")` → two connected companies.
    Ask; user picks **Acme Beauty LLC**.
 5. Optional: `get_datasource_tools(datasource="quickbooks", data_source_id="ds_9fK2ab", workspace_id="ws_RVKLMvq")`.
 6. Resolve “last month” (if today is 2026-08-13) → `2026-07-01` … `2026-07-31`.
@@ -725,7 +727,7 @@ numbers are real. v1 live emphasis: **QuickBooks Online**.
 4. `create_skill(..., destination="mosofin", confirmed="yes", files=...)`.
 5. Report the saved **name** and that a new version was created.
 
-### Example D — User asks to create a QBO invoice
+### Example D — User asks to create an invoice
 
 **Do not call invoke.** MosoFin is read-only. Explain that the app cannot
 create or send invoices. Offer to **search** existing invoices instead.
@@ -739,7 +741,7 @@ When `MCP_APPS_ENABLED=true`, `list_workspaces` and `get_skills` bind
 - `ui://mosofin/views/workspace-list-<hash8>`
 - `ui://mosofin/views/skills-list-<hash8>`
 
-Hosts that render MCP Apps show iframes; Claude Code still uses JSON.
+Hosts that render MCP Apps show iframes; plugin hosts still use JSON.
 **Do not** register extra tools for UI. Widget domain metadata is ChatGPT
 submission-only and must not change tool logic.
 
@@ -784,7 +786,7 @@ submission-only and must not change tool logic.
 - Defaulting `destination` on `create_skill`.
 - Saving a skill before results exist.
 - Auto-replaying a skill because the name looked close.
-- Writing to QuickBooks / Stripe / any SaaS.
+- Writing to any connected accounting platform, Stripe, or other SaaS.
 - Answering financial figures from memory or another workspace.
 
 ---

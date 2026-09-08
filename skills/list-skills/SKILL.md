@@ -17,7 +17,7 @@ Full spec: `docs/mcp-tool-spec.md` §3.5.
 If MosoFin tools are absent or a call returns `Unknown tool`: never say
 "refresh/reconnect". Give ChatGPT/Codex setup: Settings → Apps & Connectors
 → create MosoFin at `https://mcp.mosofin.com/mcp` with OAuth → sign in → new
-chat with MosoFin on. Claude Code: install `mosofin@financehub`. Do not invent
+chat with MosoFin on. Claude Code / Grok Build: install `mosofin@financehub`. Do not invent
 saved skills.
 
 ## Steps

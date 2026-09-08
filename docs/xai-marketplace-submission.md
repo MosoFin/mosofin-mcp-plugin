@@ -44,7 +44,7 @@ source pinned to a full commit SHA. Nothing from this repo is vendored there.
 ```json
 {
   "name": "mosofin",
-  "description": "Connect Grok Build to MosoFin: authenticated, workspace-scoped, read-only business data across connected SaaS platforms, including QuickBooks.",
+  "description": "Connect Grok Build to MosoFin: authenticated, workspace-scoped, read-only financial data across connected SaaS platforms.",
   "category": "finance",
   "source": {
     "source": "url",
@@ -62,7 +62,7 @@ source pinned to a full commit SHA. Nothing from this repo is vendored there.
 `domains` are brand-scoped. Note that xAI's contributing guide pushes back on
 generic `keywords` (`mcp`, `finance`, `automation`, …) because they drive the
 plugin CTA and can mis-fire on unrelated requests — if review asks, trim the
-list to `mosofin`-prefixed terms and `quickbooks`.
+list to `mosofin`-prefixed terms.
 
 Submit `mosofin` first. `mosofin-finance` lives in
 [mosofin/mosofin-finance-skills](https://github.com/mosofin/mosofin-finance-skills)

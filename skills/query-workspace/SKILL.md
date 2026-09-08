@@ -1,6 +1,6 @@
 ---
 name: query-workspace
-description: Query MosoFin workspace business data (QuickBooks and other connected SaaS). Use when the user asks for P&L, invoices, cash, customers, or any live books data, or mentions MosoFin, a client workspace, or reconnecting a data source.
+description: Query MosoFin workspace business data (accounting platforms and other connected SaaS). Use when the user asks for P&L, invoices, cash, customers, or any live books data, or mentions MosoFin, a client workspace, or reconnecting a data source.
 allowed-tools:
   - mcp__plugin_mosofin_mosofin__list_workspaces
   - mcp__plugin_mosofin_mosofin__get_agent_datasources
@@ -14,7 +14,7 @@ Read-only path for any MosoFin data question. Call only the MCP tools listed
 in frontmatter. Full per-tool spec (inputs, outputs, examples, errors):
 `docs/mcp-tool-spec.md`. Short contract: `docs/plugin-contract.md`.
 
-Claude Code tool ids (plugin `mosofin`, server `mosofin`):
+Host-namespaced tool ids (Claude Code / Grok Build; plugin `mosofin`, server `mosofin`):
 
 - `mcp__plugin_mosofin_mosofin__list_workspaces`
 - `mcp__plugin_mosofin_mosofin__get_agent_datasources`
@@ -65,8 +65,8 @@ then pass handles explicitly.
 
 ## Read-only boundary
 
-MosoFin cannot create, update, send, or delete records in QuickBooks or any
-other SaaS. If asked to (e.g. "create an invoice"), do not invoke — explain
+MosoFin cannot create, update, send, or delete records in any connected
+accounting platform or other SaaS. If asked to (e.g. "create an invoice"), do not invoke — explain
 the boundary and offer the read equivalent (e.g. `search_invoices`).
 
 ## Errors
@@ -74,8 +74,8 @@ the boundary and offer the read equivalent (e.g. `search_invoices`).
 - **Unknown tool / MosoFin tools missing** — connector not enabled for this
   chat. Never say "refresh/reconnect". Give ChatGPT/Codex setup: Settings →
   Apps & Connectors → create MosoFin at `https://mcp.mosofin.com/mcp` with
-  OAuth → sign in → new chat with MosoFin turned on. Claude Code: install
-  `mosofin@financehub`. Then retry. Do not invent data.
+  OAuth → sign in → new chat with MosoFin turned on. Claude Code / Grok Build:
+  install `mosofin@financehub`. Then retry. Do not invent data.
 - **Workspace not confirmed** — confirm via `list_workspaces` then retry.
 - **`entity_required`** — ask which company from `entities[]`; retry with that
   `data_source_id`.

@@ -1,6 +1,6 @@
 ---
 name: connections
-description: Show which company files and data sources are connected to a MosoFin workspace and their status (maps to the get_agent_datasources MCP tool). Use when the user asks what's connected, which companies are linked, whether QuickBooks is working, or needs to reconnect a data source.
+description: Show which company files and data sources are connected to a MosoFin workspace and their status (maps to the get_agent_datasources MCP tool). Use when the user asks what's connected, which companies are linked, whether a data source is working, or needs to reconnect a data source.
 allowed-tools:
   - mcp__plugin_mosofin_mosofin__list_workspaces
   - mcp__plugin_mosofin_mosofin__get_agent_datasources
@@ -16,8 +16,8 @@ Status-only path; fetches no accounting data. Same contract as
 If MosoFin tools are absent or a call returns `Unknown tool`: never say
 "refresh/reconnect". Give ChatGPT/Codex setup: Settings → Apps & Connectors
 → create MosoFin at `https://mcp.mosofin.com/mcp` with OAuth → sign in → new
-chat with MosoFin on. Claude Code: install `mosofin@financehub`. Do not invent
-status. A disconnected QuickBooks file is a different problem (`reconnect_url`).
+chat with MosoFin on. Claude Code / Grok Build: install `mosofin@financehub`. Do not invent
+status. A disconnected company file is a different problem (`reconnect_url`).
 
 ## Steps
 

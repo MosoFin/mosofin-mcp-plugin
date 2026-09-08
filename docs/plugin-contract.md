@@ -1,8 +1,8 @@
-# MosoFin Claude Code plugin contract
+# MosoFin plugin contract
 
 This plugin talks to the **existing remote MosoFin MCP server**. It does not
 bundle or spawn that server. Keep tool names, handles, and call order stable —
-plugin skills hardcode the namespaced Claude Code tool ids below.
+plugin skills hardcode the host-namespaced tool ids below.
 
 **Full per-tool spec (arguments, response shapes, errors, worked examples):**
 [`mcp-tool-spec.md`](./mcp-tool-spec.md). Read that document before calling
@@ -15,7 +15,8 @@ tools. This contract is the short stability/auth summary.
 | Production | `https://mcp.mosofin.com/mcp` | OAuth 2.0 DCR + PKCE at `https://auth.mosofin.com` |
 | Staging / local tunnel | Set plugin `userConfig.mcp_url` (or `MOSOFIN_MCP_URL` on the server) | Same OAuth; metadata must advertise the URL currently served |
 
-Claude Code registers itself as an OAuth client. The plugin ships **no** client
+The MCP host (Claude Code, Grok Build, ChatGPT, …) registers itself as an
+OAuth client through dynamic client registration. The plugin ships **no** client
 id, client secret, or JWT keys.
 
 ## Live `tools/list` names
@@ -36,9 +37,10 @@ the server name `MosoFin`.
 Parked / do not call: `get_agents`, `update_skill`, goal-session tools
 (`start_goal`, `clarify_goal`, …).
 
-### Claude Code namespaced ids
+### Host-namespaced ids
 
-Plugin `name` is `mosofin`; MCP server key is `mosofin`. Callable tool ids:
+Plugin `name` is `mosofin`; MCP server key is `mosofin`. Callable tool ids as
+namespaced by the plugin host (Claude Code form shown):
 
 ```
 mcp__plugin_mosofin_mosofin__list_workspaces
@@ -50,7 +52,7 @@ mcp__plugin_mosofin_mosofin__get_my_skill
 mcp__plugin_mosofin_mosofin__create_skill
 ```
 
-The MCP server itself registers as `plugin:mosofin:mosofin` in `/mcp`.
+In Claude Code the server itself shows as `plugin:mosofin:mosofin` in `/mcp`.
 
 ## Required call order
 
@@ -90,7 +92,7 @@ Answer only from `invoke_datasource_api_tool` results in this conversation.
 End data-backed answers with a single **Data sources** line (datasource +
 `fetched_at`). If the fetch does not cover part of the question, say so.
 
-## Elicitation caveat (Claude Code)
+## Elicitation caveat (all hosts)
 
 Production MCP runs **stateless + JSON**. Native workspace / datasource /
 consent pickers degrade to conversational envelopes. That is expected. Ask in

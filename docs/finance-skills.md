@@ -34,7 +34,7 @@ The second entry is the whole integration:
 }
 ```
 
-At install time Claude Code:
+At install time the plugin host (Claude Code, Grok Build):
 
 1. reads `marketplace.json` from this repo,
 2. clones `mosofin-finance-skills` at the pinned commit,

@@ -1,6 +1,6 @@
 ---
 name: save-skill
-description: Save or replay a MosoFin analysis skill after results exist. Use when the user wants to keep a workflow, list saved skills, replay a named skill, or says save this to MosoFin / Claude.
+description: Save or replay a MosoFin analysis skill after results exist. Use when the user wants to keep a workflow, list saved skills, replay a named skill, or says save this to MosoFin or locally.
 allowed-tools:
   - mcp__plugin_mosofin_mosofin__list_workspaces
   - mcp__plugin_mosofin_mosofin__get_skills
@@ -15,7 +15,7 @@ and explicitly says yes **again** (a blanket "run it and save it" earlier in
 the chat does not count). Full per-tool spec: `docs/mcp-tool-spec.md`.
 Short contract: `docs/plugin-contract.md`.
 
-Claude Code tool ids (plugin `mosofin`, server `mosofin`):
+Host-namespaced tool ids (Claude Code / Grok Build; plugin `mosofin`, server `mosofin`):
 
 - `mcp__plugin_mosofin_mosofin__list_workspaces`
 - `mcp__plugin_mosofin_mosofin__get_skills`
@@ -33,7 +33,8 @@ Native consent pickers may not appear. Ask in chat, then pass
 If MosoFin tools are absent or a call returns `Unknown tool`: never say
 "refresh/reconnect". Give ChatGPT/Codex setup: Settings → Apps & Connectors
 → create MosoFin at `https://mcp.mosofin.com/mcp` with OAuth → sign in → new
-chat with MosoFin on. Claude Code: install `mosofin@financehub`. Do not claim
+chat with MosoFin on. Claude Code / Grok Build: install `mosofin@financehub`.
+Do not claim
 a skill was saved.
 
 ## Workspace first
@@ -69,7 +70,7 @@ Prerequisites: a proven workflow already ran in this conversation (invoke
 results exist) **and** the user explicitly asked to save after seeing those
 results.
 
-1. Ask where to save: `mosofin` (library), `claude` (bundle to install here),
+1. Ask where to save: `mosofin` (library), `claude` (bundle to install in this client),
    or `both`. Do not default.
 2. Call `create_skill` with:
    - `name` — one verb + one financial object, kebab-case

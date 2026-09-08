@@ -1,6 +1,6 @@
 {
   "name": "financehub",
-  "description": "FinanceHub marketplace by MosoFin: the mosofin plugin connecting Claude Code to workspace-scoped, read-only business data.",
+  "description": "FinanceHub marketplace by MosoFin: the mosofin plugin connecting AI assistants to workspace-scoped, read-only financial data.",
   "owner": {
     "name": "MosoFin",
     "url": "https://mosofin.com",
@@ -10,7 +10,7 @@
     {
       "name": "mosofin",
       "source": "./",
-      "description": "Connect Claude Code to MosoFin: authenticated, workspace-scoped, read-only business data across connected SaaS platforms.",
+      "description": "Connect your AI assistant to MosoFin: authenticated, workspace-scoped, read-only financial data across connected SaaS platforms.",
       "category": "finance",
       "version": "0.4.0",
       "author": {
@@ -58,7 +58,6 @@
         "month-end-close",
         "reconciliation",
         "journal-entry",
-        "quickbooks",
         "mosofin"
       ],
       "domains": [

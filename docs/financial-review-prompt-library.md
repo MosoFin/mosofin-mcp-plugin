@@ -1,11 +1,11 @@
 # Financial review prompt library
 
 These prompts are practical starting points for MosoFin’s permission-scoped,
-read-only workspace in Claude or another supported MCP client. They do not add
+read-only workspace in Claude, Grok, ChatGPT, or another supported MCP client. They do not add
 permissions, change source records, or replace accounting judgment.
 
-QuickBooks Online is the live financial data source today. Other sources should
-not be described as available until they are released and verified.
+Connected accounting platforms are the live financial data source. Describe a
+source as available only once it is connected and verified in the workspace.
 
 ## Before every review
 
@@ -13,7 +13,7 @@ Use this scope block before the task-specific prompt:
 
 ```text
 List my accessible MosoFin workspaces and ask me to confirm the workspace or
-workspaces for this review. Then confirm the connected QuickBooks company,
+workspaces for this review. Then confirm the connected company file,
 reporting period, accounting basis, and available source coverage.
 
 Retrieve only the data required for the question. Cite the fetched source and
@@ -85,7 +85,7 @@ to document the 17 review steps and reviewer approval.
 ## 5. Selected-company comparison
 
 ```text
-Ask me to confirm the QuickBooks company workspaces included in this question.
+Ask me to confirm the company workspaces included in this question.
 For [period], compare [metric or report] across only those selected companies.
 Show each company separately before any combined analytical total. Preserve the
 company, period, basis, currency, and source context for every figure.

@@ -15,7 +15,7 @@ MosoFin data or skill tool. Full spec: `docs/mcp-tool-spec.md` §3.1.
 If `list_workspaces` is not in this session's tool list, or a call returns
 `Unknown tool` (e.g. `mosofin.list_workspaces` or
 `codex_apps/mosofin.list_workspaces`): the MosoFin **connector is not
-connected or not enabled for this chat**. That is not a QuickBooks reconnect.
+connected or not enabled for this chat**. That is not a data-source reconnect.
 
 - Do not invent workspaces or data.
 - **Never** say "refresh/reconnect the MosoFin integration".
@@ -34,6 +34,8 @@ connected or not enabled for this chat**. That is not a QuickBooks reconnect.
 
 **Claude Code:** `/plugin marketplace add mosofin/mosofin-mcp-plugin` then
 `/plugin install mosofin@financehub`, sign in, retry.
+
+**Grok Build:** install `mosofin` from the xAI plugin marketplace, sign in, retry.
 
 ## Steps
 

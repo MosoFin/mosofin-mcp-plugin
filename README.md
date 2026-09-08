@@ -1,7 +1,7 @@
 # MosoFin
 
-Connect Claude Code or ChatGPT to your QuickBooks and business data through
-the MosoFin MCP server. Sign in once; the plugin is read-only and scoped to
+Connect your AI assistant — Claude Code, Grok Build, ChatGPT, Codex, or any
+MCP client — to your financial data through the MosoFin MCP server. Sign in once; the plugin is read-only and scoped to
 the workspace you confirm.
 
 ## Install
@@ -14,6 +14,20 @@ the workspace you confirm.
 ```
 
 Sign in in the browser when prompted.
+
+### Grok Build
+
+The plugin uses the same manifest and skill format Grok Build reads. Once the
+`mosofin` entry is listed in the
+[xAI plugin marketplace](https://github.com/xai-org/plugin-marketplace),
+install it from Grok Build's plugin catalog and sign in when prompted. Listing
+status and the submission entry are in
+[`docs/xai-marketplace-submission.md`](docs/xai-marketplace-submission.md).
+
+### Any other MCP client
+
+Add a remote MCP server at `https://mcp.mosofin.com/mcp` (Streamable HTTP,
+OAuth). The client registers itself; no client id or secret is shipped.
 
 ### ChatGPT and Codex
 
@@ -28,7 +42,7 @@ Sign in in the browser when prompted.
 
 If you see `Unknown tool: mosofin.list_workspaces`, MosoFin is not enabled for
 this chat. Connect it as above (or turn the app on in this conversation). That
-is not a QuickBooks reconnect.
+is not a data-source reconnect.
 
 Then:
 
@@ -37,8 +51,8 @@ Then:
 
 ## Update
 
-Claude Code does not pick up GitHub changes automatically. After this repo
-updates, refresh the marketplace and the plugin:
+Plugin hosts do not pick up GitHub changes automatically. After this repo
+updates, refresh the marketplace and the plugin (Claude Code shown):
 
 ```text
 /plugin marketplace update financehub

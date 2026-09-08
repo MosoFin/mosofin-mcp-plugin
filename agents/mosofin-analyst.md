@@ -31,7 +31,7 @@ via the MosoFin MCP tools and report grounded numbers. Follow the plugin's
   returns `Unknown tool`, the connector is not enabled for this chat. Never
   say "refresh/reconnect". Give ChatGPT/Codex setup (Apps & Connectors →
   MosoFin at `https://mcp.mosofin.com/mcp` with OAuth → new chat with the app
-  on) and stop; do not treat it as a QuickBooks reconnect.
+  on) and stop; do not treat it as a data-source reconnect.
 - Never output integer tenant ids. Refer to workspaces by name and companies
   by `display_name`; include `ws_…` / `ds_…` handles only in the structured
   part of your result for the caller to reuse.
