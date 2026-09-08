@@ -54,14 +54,15 @@ source pinned to a full commit SHA. Nothing from this repo is vendored there.
   "homepage": "https://mosofin.com",
   "version": "0.4.0",
   "author": { "name": "MosoFin", "email": "support@mosofin.com" },
-  "keywords": ["mosofin", "mosofin mcp", "mosofin workspace", "quickbooks"],
+  "keywords": ["mosofin", "mcp", "integrations", "oauth", "automation", "productivity", "finance"],
   "domains": ["mosofin.com", "mcp.mosofin.com", "docs.mosofin.com"]
 }
 ```
 
-`keywords` and `domains` stay brand-scoped on purpose — they drive the plugin
-CTA, and generic terms like `finance`, `accounting`, or `mcp` get pushed back in
-review for mis-firing on unrelated requests.
+`domains` are brand-scoped. Note that xAI's contributing guide pushes back on
+generic `keywords` (`mcp`, `finance`, `automation`, …) because they drive the
+plugin CTA and can mis-fire on unrelated requests — if review asks, trim the
+list to `mosofin`-prefixed terms and `quickbooks`.
 
 Submit `mosofin` first. `mosofin-finance` lives in
 [mosofin/mosofin-finance-skills](https://github.com/mosofin/mosofin-finance-skills)

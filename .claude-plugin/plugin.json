@@ -11,9 +11,11 @@
   "keywords": [
     "mosofin",
     "mcp",
-    "finance",
-    "quickbooks",
-    "workspace"
+    "integrations",
+    "oauth",
+    "automation",
+    "productivity",
+    "finance"
   ],
   "license": "MIT",
   "userConfig": {
