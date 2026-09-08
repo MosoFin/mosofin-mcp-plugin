@@ -9,7 +9,7 @@ the workspace you confirm.
 ### Claude Code
 
 ```text
-/plugin marketplace add mosofin/mosofin-plugins
+/plugin marketplace add mosofin/mosofin-mcp-plugin
 /plugin install mosofin@financehub
 ```
 
@@ -69,7 +69,7 @@ The accounting skills are **not in this repo**. They live in
 and are published through this marketplace as a second plugin:
 
 ```text
-/plugin marketplace add mosofin/mosofin-plugins
+/plugin marketplace add mosofin/mosofin-mcp-plugin
 /plugin install mosofin-finance@financehub
 ```
 
@@ -94,6 +94,22 @@ These resources are examples, not accounting conclusions. Confirm the workspace,
 company, period, basis, and available source coverage before a run. MosoFin tools
 are read-only; the responsible person reviews the support and owns every decision,
 correction, communication, and sign-off.
+
+## Security and network access
+
+Declared for marketplace review (per the xAI marketplace
+[security expectations](https://github.com/xai-org/plugin-marketplace/blob/main/CONTRIBUTING.md#security-expectations)):
+
+| Item | Detail |
+|---|---|
+| Network endpoints | `https://mcp.mosofin.com/mcp` only (overridable via the `mcp_url` user config, for tunnel/staging testing). |
+| Credentials | OAuth sign-in completed in the browser; tokens are held by the MCP client. The plugin never reads `.env`, `~/.ssh`, or environment secrets. |
+| Data access | Read-only, scoped to the one workspace you confirm in the chat. No write, post, pay, or reconcile operations. |
+| Executable code | None. The plugin ships `SKILL.md` text, one agent definition, and an `.mcp.json` pointing at the HTTP server — no scripts, binaries, hooks, or install steps. |
+| Telemetry | None from the plugin itself. |
+
+Submitting this plugin to the [xAI plugin marketplace](https://github.com/xai-org/plugin-marketplace)
+is documented in [`docs/xai-marketplace-submission.md`](docs/xai-marketplace-submission.md).
 
 ## Contributing
 

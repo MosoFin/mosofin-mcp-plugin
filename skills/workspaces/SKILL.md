@@ -32,7 +32,7 @@ connected or not enabled for this chat**. That is not a QuickBooks reconnect.
 4. Complete MosoFin sign-in.
 5. Start a **new** chat, turn the MosoFin app/connector **on**, then retry.
 
-**Claude Code:** `/plugin marketplace add mosofin/mosofin-plugins` then
+**Claude Code:** `/plugin marketplace add mosofin/mosofin-mcp-plugin` then
 `/plugin install mosofin@financehub`, sign in, retry.
 
 ## Steps

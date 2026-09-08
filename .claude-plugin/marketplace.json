@@ -11,6 +11,7 @@
       "name": "mosofin",
       "source": "./",
       "description": "Connect Claude Code to MosoFin: authenticated, workspace-scoped, read-only business data across connected SaaS platforms.",
+      "category": "finance",
       "version": "0.4.0",
       "author": {
         "name": "MosoFin",
@@ -24,6 +25,11 @@
         "finance",
         "quickbooks",
         "workspace"
+      ],
+      "domains": [
+        "mosofin.com",
+        "mcp.mosofin.com",
+        "docs.mosofin.com"
       ]
     },
     {
@@ -31,11 +37,12 @@
       "source": {
         "source": "url",
         "url": "https://github.com/mosofin/mosofin-finance-skills.git",
-        "ref": "v0.2.1",
-        "sha": "cbd8107912877d70f7ffa9f18ab0c4b60e9813eb"
+        "ref": "v0.3.0",
+        "sha": "6f428ff32c79b9994511604bb4e2dc66da5cc619"
       },
-      "description": "Finance skills that read your live books through MosoFin: journal entries, three-way match, duplicate detection, GL coding, expense review, bank reconciliation, month-end close, financial statements, AR aging. Requires an active MosoFin subscription. Read-only \u2014 every output is a proposal for a person to post.",
-      "version": "0.2.1",
+      "description": "Finance skills that read your live books through MosoFin: journal entries, three-way match, duplicate detection, GL coding, expense review, bank reconciliation, month-end close, financial statements, AR aging. Requires an active MosoFin subscription. Read-only — every output is a proposal for a person to post.",
+      "category": "finance",
+      "version": "0.3.0",
       "author": {
         "name": "MosoFin",
         "email": "support@mosofin.com"
@@ -51,6 +58,10 @@
         "journal-entry",
         "quickbooks",
         "mosofin"
+      ],
+      "domains": [
+        "mosofin.com",
+        "docs.mosofin.com"
       ]
     }
   ]

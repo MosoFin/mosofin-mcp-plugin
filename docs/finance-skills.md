@@ -13,7 +13,7 @@ changes — only when a new release is pinned.
 This repo is a **marketplace** named `financehub`, and it publishes two plugins:
 
 ```
-mosofin-plugins/
+mosofin-mcp-plugin/
 └── .claude-plugin/marketplace.json
     └── plugins[]
         ├── "mosofin"          source: "./"      ← this repo IS the plugin
@@ -49,7 +49,7 @@ the `mosofin` plugin, so a placeholder folder there would register a phantom ski
 ## Install
 
 ```text
-/plugin marketplace add mosofin/mosofin-plugins
+/plugin marketplace add mosofin/mosofin-mcp-plugin
 /plugin install mosofin-finance@financehub
 ```
 
@@ -123,7 +123,7 @@ The two repos are licensed differently, deliberately:
 
 | Repo | Licence | Why |
 |------|---------|-----|
-| `mosofin-plugins` (this) | MIT | Thin connection layer; maximum reuse |
+| `mosofin-mcp-plugin` (this) | MIT | Thin connection layer; maximum reuse |
 | `mosofin-finance-skills` | AGPL-3.0-only | The accounting procedures are the product |
 
 A marketplace may list plugins under licences other than its own. The `license`
