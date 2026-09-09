@@ -12,12 +12,20 @@ tools. This contract is the short stability/auth summary.
 
 | Environment | MCP URL (Streamable HTTP) | Auth |
 |-------------|---------------------------|------|
-| Production | `https://mcp.mosofin.com/mcp` | OAuth 2.0 DCR + PKCE at `https://auth.mosofin.com` |
+| Production | `https://mcp.mosofin.com/mcp` | OAuth 2.0 DCR + PKCE; issuer `https://mcp.mosofin.com` |
 | Staging / local tunnel | Not via the plugin — add the tunnel URL as a separate MCP server in your host (or `MOSOFIN_MCP_URL` on the server side) | Same OAuth; metadata must advertise the URL currently served |
 
 The MCP host (Claude Code, Grok Build, ChatGPT, …) registers itself as an
 OAuth client through dynamic client registration. The plugin ships **no** client
 id, client secret, or JWT keys.
+
+Discovery is standard and needs no configuration: `/mcp` answers 401 with a
+`WWW-Authenticate` header naming
+`https://mcp.mosofin.com/.well-known/oauth-protected-resource/mcp` (RFC 9728),
+which points at `https://mcp.mosofin.com` as the authorization server. Its
+metadata advertises the authorize, token, and registration endpoints, `S256`
+PKCE, and the `read` scope. The MCP server and the authorization server are the
+same host.
 
 ## Live `tools/list` names
 
