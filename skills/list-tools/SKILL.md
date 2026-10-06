@@ -5,6 +5,9 @@ allowed-tools:
   - mcp__plugin_mosofin_mosofin__list_workspaces
   - mcp__plugin_mosofin_mosofin__get_agent_datasources
   - mcp__plugin_mosofin_mosofin__get_datasource_tools
+  - mcp__plugin_mosofin_local__list_workspaces
+  - mcp__plugin_mosofin_local__get_agent_datasources
+  - mcp__plugin_mosofin_local__get_datasource_tools
 ---
 
 # List datasource tools

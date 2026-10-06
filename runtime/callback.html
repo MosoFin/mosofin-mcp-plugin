@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="data:image/svg+xml;base64,{{LOGO}}">
+  <title>{{TITLE}} · MosoFin</title>
+  <script nonce="{{NONCE}}">try { history.replaceState(null, '', location.pathname); } catch {}</script>
+  <style nonce="{{NONCE}}">
+    :root { color-scheme: light dark; --ink: #13322b; --muted: #557069; --bg: #f4f8f6; --card: #ffffff; --line: #dfe9e5; --accent: #1f7a5c; --tint: #e8f4ef; --warn: #a35a12; --warn-tint: #fbf0e3;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--ink); background: var(--bg); }
+    @media (prefers-color-scheme: dark) { :root { --ink: #e5f0ec; --muted: #9db3ac; --bg: #0f1a17; --card: #15241f; --line: #253a33; --accent: #5cc79f; --tint: #183229; --warn: #f0b36b; --warn-tint: #33261a; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; background: var(--bg); }
+    header { display: flex; align-items: center; gap: 10px; padding: 28px 40px; font-size: 22px; font-weight: 650; letter-spacing: -.5px; }
+    header img { width: 32px; height: 32px; }
+    main { flex: 1; display: grid; place-items: center; padding: 24px 16px 64px; }
+    .card { width: 100%; max-width: 540px; padding: 44px 40px 32px; border: 1px solid var(--line); border-radius: 22px; background: var(--card); text-align: center; box-shadow: 0 24px 70px -40px #0b2b2140; }
+    .icon { display: grid; place-items: center; width: 72px; height: 72px; margin: 0 auto 24px; border-radius: 50%; color: var(--accent); background: var(--tint); }
+    .failure .icon { color: var(--warn); background: var(--warn-tint); }
+    .icon svg { width: 32px; height: 32px; }
+    .eyebrow { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--accent); }
+    .failure .eyebrow { color: var(--warn); }
+    h1 { margin: 0; font-size: clamp(26px, 5vw, 34px); line-height: 1.2; letter-spacing: -1px; font-weight: 650; text-wrap: balance; }
+    .description { max-width: 390px; margin: 18px auto 26px; color: var(--muted); font-size: 16px; line-height: 1.65; text-wrap: pretty; }
+    .next { margin: 0 0 24px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--tint); text-align: left; display: flex; gap: 12px; align-items: center; }
+    .next svg { width: 22px; height: 22px; flex: 0 0 auto; color: var(--accent); }
+    .next strong { display: block; font-size: 14px; font-weight: 600; }
+    .next span { display: block; margin-top: 2px; color: var(--muted); font-size: 13px; }
+    .hint { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    kbd { padding: 1px 5px; border: 1px solid var(--line); border-radius: 4px; font: inherit; white-space: nowrap; }
+    footer { padding: 0 16px 24px; text-align: center; color: var(--muted); font-size: 12px; }
+    @media (max-width: 480px) { header { padding: 20px 16px; } .card { padding: 32px 20px 24px; border-radius: 18px; } }
+  </style>
+</head>
+<body>
+  <header><img src="data:image/svg+xml;base64,{{LOGO}}" alt="" width="32" height="32"><span>MosoFin</span></header>
+  <main>
+    <section class="card {{STATUS}}" aria-labelledby="title">
+      <div class="icon" aria-hidden="true">{{STATUS_ICON}}</div>
+      <p class="eyebrow">{{EYEBROW}}</p>
+      <h1 id="title">{{TITLE}}</h1>
+      <p class="description">{{DESCRIPTION}}</p>
+      <div class="next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>
+        <div><strong>Return to your conversation</strong><span>{{NEXT_STEP}}</span></div>
+      </div>
+      <p class="hint">You can close this tab — <kbd>Ctrl</kbd> + <kbd>W</kbd> on Windows/Linux, <kbd>⌘</kbd> + <kbd>W</kbd> on Mac.</p>
+    </section>
+  </main>
+  <footer>Read-only access to your books. MosoFin never changes your records.</footer>
+</body>
+</html>

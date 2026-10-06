@@ -4,6 +4,8 @@ description: List the user's saved MosoFin skills in the confirmed workspace (ma
 allowed-tools:
   - mcp__plugin_mosofin_mosofin__list_workspaces
   - mcp__plugin_mosofin_mosofin__get_skills
+  - mcp__plugin_mosofin_local__list_workspaces
+  - mcp__plugin_mosofin_local__get_skills
 ---
 
 # List saved skills

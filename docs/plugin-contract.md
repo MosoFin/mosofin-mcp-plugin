@@ -62,6 +62,17 @@ mcp__plugin_mosofin_mosofin__create_skill
 
 In Claude Code the server itself shows as `plugin:mosofin:mosofin` in `/mcp`.
 
+### Second route: the `local` helper
+
+`.mcp.json` also declares `local`, a Node.js stdio helper
+(`runtime/connect.cjs`) that reaches the same server and signs in from the
+conversation. It shows as `plugin:mosofin:local`. Until signed in it exposes
+only `mosofin_connection_status`, `mosofin_sign_in` and `mosofin_connect`;
+afterwards it forwards the seven tools above as
+`mcp__plugin_mosofin_local__<tool>`. Skills accept either route and use the
+one that works. Design and the server endpoints conversation sign-in needs:
+[`conversation-signin.md`](./conversation-signin.md).
+
 ## Required call order
 
 1. `list_workspaces` with no args (discovery).

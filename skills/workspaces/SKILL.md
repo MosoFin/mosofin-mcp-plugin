@@ -3,6 +3,7 @@ name: workspaces
 description: List, confirm, or switch the MosoFin workspace for this conversation (maps to the list_workspaces MCP tool). Use when the user asks which workspaces they have, wants to work in a specific workspace, or wants to switch or add workspaces mid-chat.
 allowed-tools:
   - mcp__plugin_mosofin_mosofin__list_workspaces
+  - mcp__plugin_mosofin_local__list_workspaces
 ---
 
 # Workspaces — discover and confirm

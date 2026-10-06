@@ -8,6 +8,13 @@ index, not a host. Submitting means opening a PR that adds **one entry** to
 `.grok-plugin/marketplace.json` in that repo, pointing at this repo as a remote
 source pinned to a full commit SHA. Nothing from this repo is vendored there.
 
+> **Before re-pinning (0.5.0+):** this release adds an optional local MCP
+> server (`runtime/`, run through `npx` with pinned packages) beside the HTTP
+> server. The "no scripts/hooks/binaries" disclosure submitted at `5f9a391` no
+> longer holds — update the PR description with the current
+> [README → Security and network access](../README.md#security-and-network-access)
+> table when bumping the `sha`, and expect review of the stdio entry.
+
 ## What this repo already satisfies
 
 | Requirement (xAI `CONTRIBUTING.md`) | Status here |
@@ -18,9 +25,9 @@ source pinned to a full commit SHA. Nothing from this repo is vendored there.
 | License stated | MIT ([LICENSE](../LICENSE)); `mosofin-finance` is AGPL-3.0-only in its own repo |
 | Remote sources pinned to a 40-char lowercase SHA | The `mosofin-finance` entry is pinned; `python3 scripts/validate-catalog.py` from the xAI repo passes against `.claude-plugin/marketplace.json` |
 | Official org source, not a personal account | `github.com/MosoFin/mosofin-mcp-plugin` |
-| Security expectations | Disclosed in [README → Security and network access](../README.md#security-and-network-access): one hardcoded HTTPS MCP endpoint, OAuth in browser, read-only, no scripts/hooks/binaries, no telemetry |
-| Portable `.mcp.json` | Production URL is literal — no `${user_config.*}` substitution, which only Claude Code expands |
-| `generate-plugin-index.py` sees the components | Dry run against this repo indexes 8 skills, 1 agent, 1 HTTP MCP server |
+| Security expectations | Disclosed in [README → Security and network access](../README.md#security-and-network-access): one hardcoded HTTPS host, OAuth in browser, read-only, one optional readable-source local MCP server with pinned npm packages, no hooks/binaries, no telemetry |
+| Portable `.mcp.json` | Production URL is literal — no `${user_config.*}` substitution, which only Claude Code expands. The `local` stdio entry uses `${CLAUDE_PLUGIN_ROOT}` / `${CLAUDE_PLUGIN_DATA}`; confirm Grok Build expands them — if not, the `local` entry fails to start there and the HTTP entry is unaffected |
+| `generate-plugin-index.py` sees the components | Dry run at `5f9a391` indexed 8 skills, 1 agent, 1 HTTP MCP server; 0.5.0 has 9 skills, 1 agent, 1 HTTP + 1 stdio MCP server |
 
 ## Steps
 

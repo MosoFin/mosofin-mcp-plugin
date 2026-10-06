@@ -3,6 +3,30 @@
     "mosofin": {
       "type": "http",
       "url": "https://mcp.mosofin.com/mcp"
+    },
+    "local": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "--yes",
+        "--ignore-scripts",
+        "--package=mcp-remote@0.14.2",
+        "--package=@modelcontextprotocol/sdk@1.30.0",
+        "--package=proper-lockfile@4.1.2",
+        "node",
+        "${CLAUDE_PLUGIN_ROOT}/runtime/connect.cjs",
+        "https://mcp.mosofin.com/mcp",
+        "--transport",
+        "http-only",
+        "--auth-timeout",
+        "300",
+        "--static-oauth-client-metadata",
+        "{\"client_name\":\"MosoFin plugin\"}"
+      ],
+      "env": {
+        "MCP_REMOTE_CONFIG_DIR": "${CLAUDE_PLUGIN_DATA}/auth",
+        "NPM_CONFIG_IGNORE_SCRIPTS": "true"
+      }
     }
   }
 }

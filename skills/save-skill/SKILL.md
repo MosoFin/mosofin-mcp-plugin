@@ -6,6 +6,10 @@ allowed-tools:
   - mcp__plugin_mosofin_mosofin__get_skills
   - mcp__plugin_mosofin_mosofin__get_my_skill
   - mcp__plugin_mosofin_mosofin__create_skill
+  - mcp__plugin_mosofin_local__list_workspaces
+  - mcp__plugin_mosofin_local__get_skills
+  - mcp__plugin_mosofin_local__get_my_skill
+  - mcp__plugin_mosofin_local__create_skill
 ---
 
 # Save or replay a MosoFin skill
@@ -21,6 +25,10 @@ Host-namespaced tool ids (Claude Code / Grok Build; plugin `mosofin`, server `mo
 - `mcp__plugin_mosofin_mosofin__get_skills`
 - `mcp__plugin_mosofin_mosofin__get_my_skill`
 - `mcp__plugin_mosofin_mosofin__create_skill`
+
+The plugin's `local` helper exposes the same tools as
+`mcp__plugin_mosofin_local__…` once signed in. Use whichever route works; one
+is enough. A Claude connector may name them differently (`mcp__MosoFin__…`).
 
 Do **not** call parked tools: `update_skill`, `get_agents`, or any goal-session
 tool (`start_goal`, `clarify_goal`, `generate_goal_brief`, `confirm_completion`).

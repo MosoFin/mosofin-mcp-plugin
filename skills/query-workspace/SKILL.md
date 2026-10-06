@@ -6,6 +6,10 @@ allowed-tools:
   - mcp__plugin_mosofin_mosofin__get_agent_datasources
   - mcp__plugin_mosofin_mosofin__get_datasource_tools
   - mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool
+  - mcp__plugin_mosofin_local__list_workspaces
+  - mcp__plugin_mosofin_local__get_agent_datasources
+  - mcp__plugin_mosofin_local__get_datasource_tools
+  - mcp__plugin_mosofin_local__invoke_datasource_api_tool
 ---
 
 # Query a MosoFin workspace
@@ -20,6 +24,10 @@ Host-namespaced tool ids (Claude Code / Grok Build; plugin `mosofin`, server `mo
 - `mcp__plugin_mosofin_mosofin__get_agent_datasources`
 - `mcp__plugin_mosofin_mosofin__get_datasource_tools`
 - `mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool`
+
+The plugin's `local` helper exposes the same tools as
+`mcp__plugin_mosofin_local__…` once signed in. Use whichever route works; one
+is enough. A Claude connector may name them differently (`mcp__MosoFin__…`).
 
 Native pickers may not appear (production MCP is stateless JSON). Ask in chat,
 then pass handles explicitly.

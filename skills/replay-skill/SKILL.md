@@ -7,6 +7,11 @@ allowed-tools:
   - mcp__plugin_mosofin_mosofin__get_my_skill
   - mcp__plugin_mosofin_mosofin__get_agent_datasources
   - mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool
+  - mcp__plugin_mosofin_local__list_workspaces
+  - mcp__plugin_mosofin_local__get_skills
+  - mcp__plugin_mosofin_local__get_my_skill
+  - mcp__plugin_mosofin_local__get_agent_datasources
+  - mcp__plugin_mosofin_local__invoke_datasource_api_tool
 ---
 
 # Replay a saved skill
