@@ -13,7 +13,18 @@ the workspace you confirm.
 /plugin install mosofin@financehub
 ```
 
-Sign in in the browser when prompted.
+At the start of every session the plugin checks whether MosoFin is connected.
+If it isn't, Claude's first reply opens with a one-line prompt to connect.
+Then just ask a MosoFin question. If you're not signed in yet, Claude signs
+you in from the conversation — a browser sign-in opens (or you get a **Sign in
+to MosoFin** link) — and picks your question back up when you say *done*.
+
+`/mcp` lists two MosoFin entries; you only ever need one of them working:
+
+| Entry | What it is |
+|---|---|
+| `plugin:mosofin:mosofin` | Direct HTTP connection; Claude Code manages its sign-in (`/mcp` → Authenticate) |
+| `plugin:mosofin:local` | Optional helper that signs in from the conversation. Needs Node.js 22.12+ and npm; without them it shows *failed* and the HTTP entry still works |
 
 ### Grok Build
 
@@ -44,6 +55,26 @@ If you see `Unknown tool: mosofin.list_workspaces`, MosoFin is not enabled for
 this chat. Connect it as above (or turn the app on in this conversation). That
 is not a data-source reconnect.
 
+## Signing in
+
+MosoFin sign-in is standard OAuth handled by your AI host; the plugin ships no
+client id, secret, or local helper. Ask your question first — the
+`/mosofin:connect` skill notices when you're signed out, keeps your question,
+gives the single sign-in step for the host you're in, and continues once you
+say *done*.
+
+| Host | Where sign-in happens |
+|---|---|
+| Claude Code | Ask a question — the helper opens browser sign-in. Or `/mcp` → `plugin:mosofin:mosofin` → **Authenticate**. Headless: `claude mcp login plugin:mosofin:mosofin --no-browser` |
+| Cowork | A **Sign in to MosoFin** link in the conversation (once MosoFin's hosted sign-in is enabled — see [`docs/conversation-signin.md`](docs/conversation-signin.md)); otherwise **Settings → Connectors** → MosoFin → **Connect** |
+| Claude Desktop / claude.ai | **Settings → Connectors** → MosoFin → **Connect** |
+| ChatGPT / Codex | **Settings → Apps & Connectors** (steps above), then a new chat with MosoFin on |
+| Grok Build | The sign-in prompt shown after installing `mosofin` |
+
+Signing in to MosoFin is separate from a company file (e.g. QuickBooks)
+showing as disconnected; that is fixed with the `reconnect_url` MosoFin
+returns, or on the workspace data-sources page (`/mosofin:connections`).
+
 Then:
 
 1. Confirm the workspace for this chat.
@@ -67,6 +98,7 @@ plugin as above.
 
 | Skill | When to use |
 |-------|-------------|
+| `/mosofin:connect` | Sign in to MosoFin from the conversation, then continue |
 | `/mosofin:workspaces` | List, confirm, or switch the workspace for this chat |
 | `/mosofin:connections` | See which company files are connected |
 | `/mosofin:list-tools` | What API operations are available |
@@ -75,28 +107,6 @@ plugin as above.
 | `/mosofin:replay-skill` | Replay a saved skill after you confirm |
 | `/mosofin:query-workspace` | Any open data question, end to end |
 | `/mosofin:save-skill` | Save a proven workflow after results exist |
-
-## Finance skills (separate repo)
-
-The accounting skills are **not in this repo**. They live in
-[mosofin/mosofin-finance-skills](https://github.com/mosofin/mosofin-finance-skills)
-and are published through this marketplace as a second plugin:
-
-```text
-/plugin marketplace add mosofin/mosofin-mcp-plugin
-/plugin install mosofin-finance@financehub
-```
-
-That installs ten read-only accounting procedures — month-end close, bank
-reconciliation, journal entries, GL coding, financial statements, AR aging,
-invoice extraction, three-way match, duplicate detection, expense review — which
-read your live books through the MosoFin connection this plugin provides. They
-require an active MosoFin subscription; setup is at
-[docs.mosofin.com](https://docs.mosofin.com/start-here/quickstart).
-
-`mosofin` and `mosofin-finance` install independently. How the two repos are
-wired together, and how to cut a finance-skills release, is documented in
-[`docs/finance-skills.md`](./docs/finance-skills.md).
 
 ## Public workflow resources
 
@@ -116,21 +126,36 @@ Declared for marketplace review (per the xAI marketplace
 
 | Item | Detail |
 |---|---|
-| Network endpoints | `https://mcp.mosofin.com/mcp` only, hardcoded in `.mcp.json`. No user-configurable URL. |
-| Credentials | OAuth sign-in completed in the browser; tokens are held by the MCP client. The plugin never reads `.env`, `~/.ssh`, or environment secrets. |
+| Network endpoints | `https://mcp.mosofin.com` only (`/mcp`, and `/plugin-auth/*` for conversation sign-in), hardcoded in `.mcp.json` and `runtime/conversation-auth.mjs`. No user-configurable URL. On first run `npx` fetches two pinned npm packages from the npm registry. |
+| Credentials | OAuth in the browser. The `mosofin` HTTP entry's tokens are held by the host. The `local` helper keeps its own tokens under `${CLAUDE_PLUGIN_DATA}/auth`, owner-only (`0600`/`0700`); it never copies the host's tokens and never puts codes, verifiers or tokens in tool results or logs. The plugin never reads `.env`, `~/.ssh`, or environment secrets. |
 | Data access | Read-only, scoped to the one workspace you confirm in the chat. No write, post, pay, or reconcile operations. |
-| Executable code | None. The plugin ships `SKILL.md` text, one agent definition, and an `.mcp.json` pointing at the HTTP server — no scripts, binaries, hooks, or install steps. |
+| Executable code | One optional local MCP server and one SessionStart hook, `runtime/` (Node.js, ~900 lines of readable source — no binaries or install steps). The hook (`hooks/hooks.json` → `runtime/session-start.cjs`) only adds a connection-check instruction to Claude's context; it makes no network calls and reads no credential contents (it checks whether the helper's saved-login files exist). `npx` runs it with install scripts disabled, using pinned `mcp-remote@0.14.2` and `@modelcontextprotocol/sdk@1.30.0` (their own dependency ranges are resolved by npm). It starts idle and opens no browser until a sign-in tool is called. It runs with the user's OS permissions and adds no file-browsing or shell tools. The `mosofin` HTTP entry works without it. |
+| Tests and CI | `scripts/` (synthetic OAuth on loopback only) and `.github/workflows/validate.yml`; not included in the release ZIP. |
 | Telemetry | None from the plugin itself. |
 
 Submitting this plugin to the [xAI plugin marketplace](https://github.com/xai-org/plugin-marketplace)
 is documented in [`docs/xai-marketplace-submission.md`](docs/xai-marketplace-submission.md).
 
+## Development
+
+```text
+hooks/     hooks.json: SessionStart → runtime/session-start.cjs (connection check + prompt to connect)
+runtime/   the `local` helper: connect.cjs (entry) → connection-server.mjs (MCP server)
+           ├─ conversation-auth.mjs    mosofin_sign_in (hosted callback)
+           ├─ oauth-helper.cjs         mosofin_connect (pinned mcp-remote)
+           └─ callback-page.cjs/.html  branded localhost callback page
+scripts/   tests (synthetic fixtures) and package_plugin.py
+```
+
+Run the checks in [`docs/testing.md`](docs/testing.md); CI runs the same set.
+`python3 scripts/package_plugin.py` builds `dist/mosofin-<version>.zip` plus a
+SHA-256. Bump `version` in both `plugin.json` files and both marketplace
+entries together — the packager refuses mismatches.
+
 ## Contributing
 
 Issues and pull requests are welcome for documentation fixes, additional
-read-only review patterns, and improvements to this connector plugin. Financial
-skill implementations belong in the separate `mosofin-finance-skills`
-repository linked above. Keep examples synthetic, state required source
+read-only review patterns, and improvements to this connector plugin. Keep examples synthetic, state required source
 coverage, separate facts from assumptions, and do not add instructions that
 post, send, pay, reconcile, or otherwise change source records. For a new
 workflow, include its audience, required inputs, expected output, review

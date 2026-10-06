@@ -6,6 +6,10 @@ allowed-tools:
   - mcp__plugin_mosofin_mosofin__get_agent_datasources
   - mcp__plugin_mosofin_mosofin__get_datasource_tools
   - mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool
+  - mcp__plugin_mosofin_local__list_workspaces
+  - mcp__plugin_mosofin_local__get_agent_datasources
+  - mcp__plugin_mosofin_local__get_datasource_tools
+  - mcp__plugin_mosofin_local__invoke_datasource_api_tool
 ---
 
 # Run a catalog operation
@@ -31,10 +35,10 @@ tool**. Full spec: `docs/mcp-tool-spec.md` §3.4. For open-ended questions
    `data_source_id` (both on **every** call and retry — the server is
    stateless). Independent invokes may batch in parallel.
 5. Handle results and errors:
-   - `Unknown tool` / MosoFin tools missing → never say "refresh/reconnect".
-     Give ChatGPT/Codex setup: Settings → Apps & Connectors → create MosoFin
-     at `https://mcp.mosofin.com/mcp` with OAuth → sign in → new chat with
-     MosoFin on. No data.
+   - `Unknown tool` / MosoFin tools missing / sign-in required → never say
+     "refresh/reconnect". Keep the requested operation and params and follow
+     `/mosofin:connect` (`skills/connect/SKILL.md`), then run it once the
+     user is signed in. No data until then.
    - `pagination.has_more` → re-invoke with
      `params.offset = pagination.next_offset`.
    - `approval_required` → ask the user, retry the **same** invoke with

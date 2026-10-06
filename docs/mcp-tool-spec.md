@@ -76,14 +76,25 @@ them because plugin `name` = `mosofin` and MCP server key = `mosofin`.
 In examples below, `name` is the **MCP registered name**. In a plugin host, use
 the namespaced id.
 
+The plugin's second, optional route — the `local` helper — forwards the same
+seven tools as `mcp__plugin_mosofin_local__<name>` once signed in, plus its
+own `mosofin_connection_status` / `mosofin_sign_in` / `mosofin_connect`. The
+server sees an ordinary OAuth client either way. See the plugin's
+`docs/conversation-signin.md`.
+
 ### 1.3 Identity and handles (never leak internals)
 
 | Kind | Format | Show to user? | Pass between tools? |
 |------|--------|---------------|---------------------|
-| Workspace | opaque `ws_…` handle | **Name only** (`Acme Consulting`) | Yes — `workspace_id` |
+| Workspace | opaque string handle (examples write `ws_…`; live values have no fixed prefix) | **Name only** (`Acme Consulting`) | Yes — `workspace_id` |
 | Company file / entity | opaque `data_source_id` hashid | **display_name only** (`Acme Beauty LLC`) | Yes — `data_source_id` |
 | Skill | opaque `skill_id` hashid | **Skill name** | Yes — `skill_id` |
 | Tenant / datasource integer PK | `48`, `5`, … | **Never** | Never |
+
+Treat every handle as an opaque string: copy it back exactly as returned and
+never parse, decode, or check its prefix. The `ws_…` / `ds_…` / `sk_…` values
+in this spec are illustrations; production workspace handles currently look
+like base64-style strings (verified 2026-10-06).
 
 This server is **stateless**. Pass `workspace_id` (and `data_source_id` when
 multi-entity) on **every** follow-up call, including retries.
@@ -760,7 +771,7 @@ submission-only and must not change tool logic.
 
 | Signal | Typical fields | What the agent does |
 |--------|----------------|---------------------|
-| MCP `Unknown tool` / MosoFin tools missing | e.g. `mosofin.list_workspaces` | Never say refresh/reconnect. Give ChatGPT/Codex setup: Apps & Connectors → `https://mcp.mosofin.com/mcp` + OAuth → new chat with MosoFin on. |
+| MCP `Unknown tool` / MosoFin tools missing / 401 sign-in required | e.g. `mosofin.list_workspaces` | Not signed in to MosoFin in this host. Never say refresh/reconnect. Keep the request, follow plugin skill `/mosofin:connect` (Claude Code `/mcp` → Authenticate; Claude Connectors; ChatGPT Apps & Connectors → `https://mcp.mosofin.com/mcp` + OAuth), then resume. |
 | Workspace not confirmed | message naming `list_workspaces` | Confirm with `workspace_ids` + `mode`, retry |
 | `selection_required` | `workspaces[]` | Ask names; confirm |
 | `entity_required` | `entities[]` with `display_name` | Ask which company; retry with `data_source_id` |
@@ -797,6 +808,7 @@ submission-only and must not change tool logic.
 |--------------|------------------------|
 | `/mosofin:query-workspace` | `list_workspaces`, `get_agent_datasources`, `get_datasource_tools`, `invoke_datasource_api_tool` |
 | `/mosofin:save-skill` | `list_workspaces`, `get_skills`, `get_my_skill`, `create_skill` |
+| `/mosofin:connect` | `list_workspaces` only (to verify sign-in); sign-in itself is the host's OAuth flow |
 
 Replay of a skill’s recipe uses **query-workspace** (`invoke_datasource_api_tool`),
 not invented numbers.

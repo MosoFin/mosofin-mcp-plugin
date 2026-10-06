@@ -6,6 +6,10 @@ allowed-tools:
   - mcp__plugin_mosofin_mosofin__get_skills
   - mcp__plugin_mosofin_mosofin__get_my_skill
   - mcp__plugin_mosofin_mosofin__create_skill
+  - mcp__plugin_mosofin_local__list_workspaces
+  - mcp__plugin_mosofin_local__get_skills
+  - mcp__plugin_mosofin_local__get_my_skill
+  - mcp__plugin_mosofin_local__create_skill
 ---
 
 # Save or replay a MosoFin skill
@@ -22,6 +26,10 @@ Host-namespaced tool ids (Claude Code / Grok Build; plugin `mosofin`, server `mo
 - `mcp__plugin_mosofin_mosofin__get_my_skill`
 - `mcp__plugin_mosofin_mosofin__create_skill`
 
+The plugin's `local` helper exposes the same tools as
+`mcp__plugin_mosofin_local__…` once signed in. Use whichever route works; one
+is enough. A Claude connector may name them differently (`mcp__MosoFin__…`).
+
 Do **not** call parked tools: `update_skill`, `get_agents`, or any goal-session
 tool (`start_goal`, `clarify_goal`, `generate_goal_brief`, `confirm_completion`).
 
@@ -30,18 +38,18 @@ Native consent pickers may not appear. Ask in chat, then pass
 
 ## If MosoFin tools are missing
 
-If MosoFin tools are absent or a call returns `Unknown tool`: never say
-"refresh/reconnect". Give ChatGPT/Codex setup: Settings → Apps & Connectors
-→ create MosoFin at `https://mcp.mosofin.com/mcp` with OAuth → sign in → new
-chat with MosoFin on. Claude Code / Grok Build: install `mosofin@financehub`.
-Do not claim
-a skill was saved.
+If MosoFin tools are absent, a call returns `Unknown tool`, or MosoFin reports
+that sign-in is required: the user is not signed in to MosoFin in this host
+(this is not a company-file reconnect). Keep their request and follow
+`/mosofin:connect` (`skills/connect/SKILL.md`) to get them signed in from this
+conversation, then continue. Never say "refresh/reconnect". Do not invent a
+saved skill — never claim one was saved.
 
 ## Workspace first
 
 If this chat has not confirmed a workspace, call `list_workspaces` and confirm
-by name (`workspace_ids` + `mode`) before any skill tool. Use opaque `ws_…`
-handles only.
+by name (`workspace_ids` + `mode`) before any skill tool. Use the opaque
+workspace handles exactly as returned.
 
 ## Replay an existing skill
 

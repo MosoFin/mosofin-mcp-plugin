@@ -6,6 +6,10 @@ allowed-tools:
   - mcp__plugin_mosofin_mosofin__get_agent_datasources
   - mcp__plugin_mosofin_mosofin__get_datasource_tools
   - mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool
+  - mcp__plugin_mosofin_local__list_workspaces
+  - mcp__plugin_mosofin_local__get_agent_datasources
+  - mcp__plugin_mosofin_local__get_datasource_tools
+  - mcp__plugin_mosofin_local__invoke_datasource_api_tool
 ---
 
 # Query a MosoFin workspace
@@ -20,6 +24,10 @@ Host-namespaced tool ids (Claude Code / Grok Build; plugin `mosofin`, server `mo
 - `mcp__plugin_mosofin_mosofin__get_agent_datasources`
 - `mcp__plugin_mosofin_mosofin__get_datasource_tools`
 - `mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool`
+
+The plugin's `local` helper exposes the same tools as
+`mcp__plugin_mosofin_local__…` once signed in. Use whichever route works; one
+is enough. A Claude connector may name them differently (`mcp__MosoFin__…`).
 
 Native pickers may not appear (production MCP is stateless JSON). Ask in chat,
 then pass handles explicitly.
@@ -44,7 +52,7 @@ then pass handles explicitly.
 5. Call `invoke_datasource_api_tool` with:
    - `datasource` (e.g. `quickbooks`)
    - `tool_name` from the catalog (e.g. `get_profit_and_loss`)
-   - `workspace_id` (opaque `ws_…` handle) on **every** call
+   - `workspace_id` (the opaque handle `list_workspaces` returned, copied exactly) on **every** call
    - `data_source_id` on **every** call when the workspace has multiple companies
    - `params` with concrete `YYYY-MM-DD` dates — resolve "last month" / "this
      quarter" before invoking. Transaction searches and period reports need
@@ -71,11 +79,11 @@ the boundary and offer the read equivalent (e.g. `search_invoices`).
 
 ## Errors
 
-- **Unknown tool / MosoFin tools missing** — connector not enabled for this
-  chat. Never say "refresh/reconnect". Give ChatGPT/Codex setup: Settings →
-  Apps & Connectors → create MosoFin at `https://mcp.mosofin.com/mcp` with
-  OAuth → sign in → new chat with MosoFin turned on. Claude Code / Grok Build:
-  install `mosofin@financehub`. Then retry. Do not invent data.
+- **Unknown tool / MosoFin tools missing / sign-in required** — the user is
+  not signed in to MosoFin in this host. Never say "refresh/reconnect". Keep
+  the question (dates already resolved) and follow `/mosofin:connect`
+  (`skills/connect/SKILL.md`); when the user says they're done, confirm the
+  workspace and answer the original question. Do not invent data.
 - **Workspace not confirmed** — confirm via `list_workspaces` then retry.
 - **`entity_required`** — ask which company from `entities[]`; retry with that
   `data_source_id`.

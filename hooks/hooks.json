@@ -1,0 +1,17 @@
+{
+  "description": "MosoFin: check the connection at session start and prompt the user to connect when it is missing.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/runtime/session-start.cjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

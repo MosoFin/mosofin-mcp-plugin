@@ -4,6 +4,8 @@ description: Show which company files and data sources are connected to a MosoFi
 allowed-tools:
   - mcp__plugin_mosofin_mosofin__list_workspaces
   - mcp__plugin_mosofin_mosofin__get_agent_datasources
+  - mcp__plugin_mosofin_local__list_workspaces
+  - mcp__plugin_mosofin_local__get_agent_datasources
 ---
 
 # Connection status
@@ -13,10 +15,11 @@ Status-only path; fetches no accounting data. Same contract as
 
 ## If MosoFin tools are missing
 
-If MosoFin tools are absent or a call returns `Unknown tool`: never say
-"refresh/reconnect". Give ChatGPT/Codex setup: Settings → Apps & Connectors
-→ create MosoFin at `https://mcp.mosofin.com/mcp` with OAuth → sign in → new
-chat with MosoFin on. Claude Code / Grok Build: install `mosofin@financehub`. Do not invent
+If MosoFin tools are absent, a call returns `Unknown tool`, or MosoFin reports
+that sign-in is required: the user is not signed in to MosoFin in this host
+(this is not a company-file reconnect). Keep their request and follow
+`/mosofin:connect` (`skills/connect/SKILL.md`) to get them signed in from this
+conversation, then continue. Never say "refresh/reconnect". Do not invent
 status. A disconnected company file is a different problem (`reconnect_url`).
 
 ## Steps

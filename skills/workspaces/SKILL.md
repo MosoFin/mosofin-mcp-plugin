@@ -3,6 +3,7 @@ name: workspaces
 description: List, confirm, or switch the MosoFin workspace for this conversation (maps to the list_workspaces MCP tool). Use when the user asks which workspaces they have, wants to work in a specific workspace, or wants to switch or add workspaces mid-chat.
 allowed-tools:
   - mcp__plugin_mosofin_mosofin__list_workspaces
+  - mcp__plugin_mosofin_local__list_workspaces
 ---
 
 # Workspaces — discover and confirm
@@ -19,23 +20,11 @@ connected or not enabled for this chat**. That is not a data-source reconnect.
 
 - Do not invent workspaces or data.
 - **Never** say "refresh/reconnect the MosoFin integration".
-- Paste these setup steps, then ask them to retry `/mosofin:workspaces`:
-
-**ChatGPT / Codex**
-1. ChatGPT web → Settings → Apps & Connectors (or chatgpt.com/plugins).
-2. Turn on Developer mode if adding a custom connector (Settings → Security
-   and login, or Apps → Advanced settings).
-3. Create or connect **MosoFin**:
-   - Name: `MosoFin`
-   - MCP server URL: `https://mcp.mosofin.com/mcp`
-   - Authentication: OAuth
-4. Complete MosoFin sign-in.
-5. Start a **new** chat, turn the MosoFin app/connector **on**, then retry.
-
-**Claude Code:** `/plugin marketplace add mosofin/mosofin-mcp-plugin` then
-`/plugin install mosofin@financehub`, sign in, retry.
-
-**Grok Build:** install `mosofin` from the xAI plugin marketplace, sign in, retry.
+- Keep the user's request and follow `/mosofin:connect`
+  (`skills/connect/SKILL.md`): it gives the one sign-in step for this host
+  (Claude Code `/mcp` → Authenticate, Claude Connectors, ChatGPT Apps &
+  Connectors, Grok Build), and picks the request back up when the user says
+  they're done — no need for them to re-run `/mosofin:workspaces`.
 
 ## Steps
 
@@ -54,9 +43,10 @@ connected or not enabled for this chat**. That is not a data-source reconnect.
 ## Rules
 
 - Refer to workspaces by **name** (and role) only. Never show integer tenant
-  ids; show a `ws_…` handle only if the user asks for a machine reference.
+  ids; show a workspace handle only if the user asks for a machine reference.
 - The server is stateless: every later tool call must carry the confirmed
-  `ws_…` handle as `workspace_id`. In multi mode, each call takes **one**
-  handle — pick the relevant one per call.
+  workspace handle as `workspace_id`, copied exactly as returned (it has no
+  fixed prefix). In multi mode, each call takes **one** handle — pick the
+  relevant one per call.
 - After confirmation, continue with `/mosofin:connections`,
   `/mosofin:list-tools`, or `/mosofin:query-workspace`.

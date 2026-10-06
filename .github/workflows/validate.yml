@@ -1,0 +1,39 @@
+name: Validate plugin
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the Claude Code validator
+        run: npm install --global @anthropic-ai/claude-code@2.1.290
+      - name: Validate manifests and components
+        # Manifests carry `logo` and `domains` for the xAI marketplace; Claude
+        # Code warns on them, so only skills and agents run --strict.
+        run: |
+          claude plugin validate .claude-plugin/plugin.json
+          claude plugin validate .claude-plugin/marketplace.json
+          claude plugin validate skills --strict
+          claude plugin validate agents --strict
+      - name: Connection tests (synthetic OAuth on loopback)
+        run: |
+          node --test scripts/callback-page.test.cjs scripts/session-start.test.cjs scripts/file-lock.test.mjs
+          npx --yes --ignore-scripts --package=mcp-remote@0.14.2 --package=@modelcontextprotocol/sdk@1.30.0 node scripts/conversation-signin.test.cjs
+          python3 scripts/test_local_connection.py
+          python3 scripts/test_remote_connection.py
+          python3 scripts/test_slow_signin.py
+      - name: Build and validate the distribution
+        run: |
+          python3 scripts/package_plugin.py
+          python3 -m zipfile -e dist/mosofin-[0-9]*.zip /tmp/mosofin-distribution
+          claude plugin validate /tmp/mosofin-distribution

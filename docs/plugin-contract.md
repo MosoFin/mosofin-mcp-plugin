@@ -62,6 +62,29 @@ mcp__plugin_mosofin_mosofin__create_skill
 
 In Claude Code the server itself shows as `plugin:mosofin:mosofin` in `/mcp`.
 
+### Second route: the `local` helper
+
+`.mcp.json` also declares `local`, a Node.js stdio helper
+(`runtime/connect.cjs`) that reaches the same server and signs in from the
+conversation. It shows as `plugin:mosofin:local`. Until signed in it exposes
+only `mosofin_connection_status`, `mosofin_sign_in` and `mosofin_connect`;
+afterwards it forwards the seven tools above as
+`mcp__plugin_mosofin_local__<tool>`. Skills accept either route and use the
+one that works. Design and the server endpoints conversation sign-in needs:
+[`conversation-signin.md`](./conversation-signin.md).
+
+## Connection check at session start
+
+`hooks/hooks.json` runs `runtime/session-start.cjs` on SessionStart
+(`startup`, `clear`, `compact`). It adds one instruction to Claude's context:
+before anything else, look for a working MosoFin `list_workspaces` (either
+plugin route or a MosoFin connector); if there is none, open the first reply
+with a one-line prompt to connect and follow `/mosofin:connect`; if there is
+one, say nothing about connecting. The hook makes no network calls and cannot
+see the host's OAuth state — the model decides from the tools it actually has.
+Hosts that don't run plugin hooks still get the same behavior from the
+skills' "If MosoFin tools are missing" sections.
+
 ## Required call order
 
 1. `list_workspaces` with no args (discovery).
@@ -73,7 +96,9 @@ In Claude Code the server itself shows as `plugin:mosofin:mosofin` in `/mcp`.
 6. Optional: `get_skills` → user yes → `get_my_skill(confirmed="yes")` to replay.
 7. Optional: after results exist and the user consents, `create_skill(confirmed="yes")`.
 
-Pass opaque `ws_…` handles and `data_source_id` hashids. Never integer tenant
+Pass the opaque workspace handles and `data_source_id` hashids exactly as
+returned — never parse them or expect a prefix (`ws_…` in examples is only
+illustrative; production handles have no fixed prefix). Never integer tenant
 or datasource primary keys. This server is stateless: pass `workspace_id` and
 `data_source_id` on every follow-up invoke.
 
@@ -85,7 +110,7 @@ use and pass that row's `data_source_id`. Invoking without a choice returns
 
 | Signal | What to do |
 |--------|------------|
-| `Unknown tool` / MosoFin tools missing from the session | Connector not enabled for this chat. Never say refresh/reconnect. Give ChatGPT/Codex setup: Apps & Connectors → MosoFin at `https://mcp.mosofin.com/mcp` + OAuth → new chat with app on. |
+| `Unknown tool` / MosoFin tools missing / sign-in required | User is not signed in to MosoFin in this host. Never say refresh/reconnect. Keep the request, follow `/mosofin:connect` (host-specific sign-in step), then resume the request once tools appear. |
 | `Workspace not confirmed for this chat` | Confirm via `list_workspaces(workspace_ids=…, mode=…)` then retry. |
 | `datasource_not_active` / `connection_unavailable` plus `reconnect_url` | Tell the user to open that URL and reconnect. Do not invent data. |
 | `entity_required` with `entities[]` | Ask which company; retry with that `data_source_id`. |
