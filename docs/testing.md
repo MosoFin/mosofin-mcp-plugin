@@ -12,7 +12,7 @@ claude plugin validate .claude-plugin/plugin.json
 claude plugin validate .claude-plugin/marketplace.json
 claude plugin validate skills --strict
 claude plugin validate agents --strict
-node --test scripts/callback-page.test.cjs
+node --test scripts/callback-page.test.cjs scripts/session-start.test.cjs
 npx --yes --ignore-scripts --package=mcp-remote@0.14.2 --package=@modelcontextprotocol/sdk@1.30.0 \
   --package=proper-lockfile@4.1.2 node scripts/conversation-signin.test.cjs
 python3 scripts/test_local_connection.py
@@ -27,6 +27,7 @@ marketplace) are unknown to Claude Code and only produce warnings.
 | Script | Covers |
 |---|---|
 | `callback-page.test.cjs` | Branded localhost page: no code/state/provider text, `no-store`, nonce CSP, URL cleanup, other routes untouched |
+| `session-start.test.cjs` | SessionStart hook: always emits the connection check and the prompt-to-connect instruction; detects a saved helper sign-in from file names only; never fails a session |
 | `conversation-signin.test.cjs` | `mosofin_sign_in`: idle start, link, hosted callback, PKCE, same-session tools, saved sign-in, stale lock, shared refresh, revocation, denial, deadline, restart while pending, crash before/after consent, shared attempt, expiry cleanup, server without the feature, no secret leakage |
 | `test_local_connection.py` | The `local` entry exactly as `.mcp.json` declares it, via `mosofin_connect`: no OAuth at startup, idempotent connect, restart reuse, refresh, owner-only files, sign-in deadline, clean shutdown |
 | `test_remote_connection.py` | The `mosofin` HTTP entry stays a bare URL; standard MCP OAuth against it works |
@@ -40,7 +41,9 @@ or returns real books. Do the manual checks below before claiming support.
 
 Dedicated MosoFin test account, Node.js 22.12+ and npm installed.
 
-1. Install `mosofin@financehub`; start a session. No browser opens. `/mcp`
+1. Install `mosofin@financehub`; start a session and say "hi". Claude's
+   first reply opens with a one-line prompt to connect MosoFin (the
+   SessionStart hook). No browser opens. `/mcp`
    shows `plugin:mosofin:mosofin` (needs authentication) and
    `plugin:mosofin:local` (connected, three tools).
 2. Ask "list my MosoFin workspaces". Expect `mosofin_connect` once, a browser

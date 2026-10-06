@@ -73,6 +73,18 @@ afterwards it forwards the seven tools above as
 one that works. Design and the server endpoints conversation sign-in needs:
 [`conversation-signin.md`](./conversation-signin.md).
 
+## Connection check at session start
+
+`hooks/hooks.json` runs `runtime/session-start.cjs` on SessionStart
+(`startup`, `clear`, `compact`). It adds one instruction to Claude's context:
+before anything else, look for a working MosoFin `list_workspaces` (either
+plugin route or a MosoFin connector); if there is none, open the first reply
+with a one-line prompt to connect and follow `/mosofin:connect`; if there is
+one, say nothing about connecting. The hook makes no network calls and cannot
+see the host's OAuth state — the model decides from the tools it actually has.
+Hosts that don't run plugin hooks still get the same behavior from the
+skills' "If MosoFin tools are missing" sections.
+
 ## Required call order
 
 1. `list_workspaces` with no args (discovery).

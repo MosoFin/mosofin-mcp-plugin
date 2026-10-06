@@ -16,9 +16,9 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 ROOT_FILES = (".claude-plugin/plugin.json", ".grok-plugin/plugin.json", ".mcp.json", "README.md", "LICENSE")
-CONTENT_DIRS = ("skills", "agents", "assets", "runtime")
+CONTENT_DIRS = ("skills", "agents", "assets", "hooks", "runtime")
 CONTENT_SUFFIXES = {".md", ".json", ".svg", ".png"}
-RUNTIME_FILES = {"connect.cjs", "connection-server.mjs", "conversation-auth.mjs", "oauth-helper.cjs", "callback-page.cjs", "callback.html"}
+RUNTIME_FILES = {"connect.cjs", "connection-server.mjs", "conversation-auth.mjs", "oauth-helper.cjs", "callback-page.cjs", "callback.html", "session-start.cjs"}
 
 
 def collect(root: Path) -> list[Path]:
@@ -55,6 +55,8 @@ def collect(root: Path) -> list[Path]:
     missing = RUNTIME_FILES - {p.name for p in paths if p.parent.name == "runtime"}
     if missing:
         raise ValueError(f"Missing runtime files: {sorted(missing)}")
+    if root / "hooks/hooks.json" not in paths:
+        raise ValueError("Missing hooks/hooks.json")
     if not any(p.name == "SKILL.md" for p in paths):
         raise ValueError("No skills found")
     for path in paths:

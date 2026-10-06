@@ -27,7 +27,7 @@ jobs:
           claude plugin validate agents --strict
       - name: Connection tests (synthetic OAuth on loopback)
         run: |
-          node --test scripts/callback-page.test.cjs
+          node --test scripts/callback-page.test.cjs scripts/session-start.test.cjs
           npx --yes --ignore-scripts --package=mcp-remote@0.14.2 --package=@modelcontextprotocol/sdk@1.30.0 --package=proper-lockfile@4.1.2 node scripts/conversation-signin.test.cjs
           python3 scripts/test_local_connection.py
           python3 scripts/test_remote_connection.py

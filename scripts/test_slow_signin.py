@@ -74,7 +74,7 @@ def main():
         root = Path(temporary)
         plugin = root / "plugin"
         plugin.mkdir()
-        for name in (".claude-plugin", "skills", "agents", "assets", "runtime"):
+        for name in (".claude-plugin", "skills", "agents", "assets", "hooks", "runtime"):
             shutil.copytree(ROOT / name, plugin / name)
         server = start()
         url = fixture_url(server)
