@@ -760,7 +760,7 @@ submission-only and must not change tool logic.
 
 | Signal | Typical fields | What the agent does |
 |--------|----------------|---------------------|
-| MCP `Unknown tool` / MosoFin tools missing | e.g. `mosofin.list_workspaces` | Never say refresh/reconnect. Give ChatGPT/Codex setup: Apps & Connectors → `https://mcp.mosofin.com/mcp` + OAuth → new chat with MosoFin on. |
+| MCP `Unknown tool` / MosoFin tools missing / 401 sign-in required | e.g. `mosofin.list_workspaces` | Not signed in to MosoFin in this host. Never say refresh/reconnect. Keep the request, follow plugin skill `/mosofin:connect` (Claude Code `/mcp` → Authenticate; Claude Connectors; ChatGPT Apps & Connectors → `https://mcp.mosofin.com/mcp` + OAuth), then resume. |
 | Workspace not confirmed | message naming `list_workspaces` | Confirm with `workspace_ids` + `mode`, retry |
 | `selection_required` | `workspaces[]` | Ask names; confirm |
 | `entity_required` | `entities[]` with `display_name` | Ask which company; retry with `data_source_id` |
@@ -797,6 +797,7 @@ submission-only and must not change tool logic.
 |--------------|------------------------|
 | `/mosofin:query-workspace` | `list_workspaces`, `get_agent_datasources`, `get_datasource_tools`, `invoke_datasource_api_tool` |
 | `/mosofin:save-skill` | `list_workspaces`, `get_skills`, `get_my_skill`, `create_skill` |
+| `/mosofin:connect` | `list_workspaces` only (to verify sign-in); sign-in itself is the host's OAuth flow |
 
 Replay of a skill’s recipe uses **query-workspace** (`invoke_datasource_api_tool`),
 not invented numbers.

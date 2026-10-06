@@ -13,7 +13,9 @@ the workspace you confirm.
 /plugin install mosofin@financehub
 ```
 
-Sign in in the browser when prompted.
+Then just ask a MosoFin question. If you're not signed in yet, Claude gives
+you the one step to do it (usually `/mcp` → `plugin:mosofin:mosofin` →
+**Authenticate**), and picks your question back up when you say *done*.
 
 ### Grok Build
 
@@ -44,6 +46,25 @@ If you see `Unknown tool: mosofin.list_workspaces`, MosoFin is not enabled for
 this chat. Connect it as above (or turn the app on in this conversation). That
 is not a data-source reconnect.
 
+## Signing in
+
+MosoFin sign-in is standard OAuth handled by your AI host; the plugin ships no
+client id, secret, or local helper. Ask your question first — the
+`/mosofin:connect` skill notices when you're signed out, keeps your question,
+gives the single sign-in step for the host you're in, and continues once you
+say *done*.
+
+| Host | Where sign-in happens |
+|---|---|
+| Claude Code | `/mcp` → `plugin:mosofin:mosofin` → **Authenticate**. Headless: `claude mcp login plugin:mosofin:mosofin --no-browser` |
+| Claude Desktop / Cowork / claude.ai | **Settings → Connectors** → MosoFin → **Connect** |
+| ChatGPT / Codex | **Settings → Apps & Connectors** (steps above), then a new chat with MosoFin on |
+| Grok Build | The sign-in prompt shown after installing `mosofin` |
+
+Signing in to MosoFin is separate from a company file (e.g. QuickBooks)
+showing as disconnected; that is fixed with the `reconnect_url` MosoFin
+returns, or on the workspace data-sources page (`/mosofin:connections`).
+
 Then:
 
 1. Confirm the workspace for this chat.
@@ -67,6 +88,7 @@ plugin as above.
 
 | Skill | When to use |
 |-------|-------------|
+| `/mosofin:connect` | Sign in to MosoFin from the conversation, then continue |
 | `/mosofin:workspaces` | List, confirm, or switch the workspace for this chat |
 | `/mosofin:connections` | See which company files are connected |
 | `/mosofin:list-tools` | What API operations are available |

@@ -85,7 +85,7 @@ use and pass that row's `data_source_id`. Invoking without a choice returns
 
 | Signal | What to do |
 |--------|------------|
-| `Unknown tool` / MosoFin tools missing from the session | Connector not enabled for this chat. Never say refresh/reconnect. Give ChatGPT/Codex setup: Apps & Connectors → MosoFin at `https://mcp.mosofin.com/mcp` + OAuth → new chat with app on. |
+| `Unknown tool` / MosoFin tools missing / sign-in required | User is not signed in to MosoFin in this host. Never say refresh/reconnect. Keep the request, follow `/mosofin:connect` (host-specific sign-in step), then resume the request once tools appear. |
 | `Workspace not confirmed for this chat` | Confirm via `list_workspaces(workspace_ids=…, mode=…)` then retry. |
 | `datasource_not_active` / `connection_unavailable` plus `reconnect_url` | Tell the user to open that URL and reconnect. Do not invent data. |
 | `entity_required` with `entities[]` | Ask which company; retry with that `data_source_id`. |

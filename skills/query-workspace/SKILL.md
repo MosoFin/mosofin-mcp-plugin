@@ -71,11 +71,11 @@ the boundary and offer the read equivalent (e.g. `search_invoices`).
 
 ## Errors
 
-- **Unknown tool / MosoFin tools missing** — connector not enabled for this
-  chat. Never say "refresh/reconnect". Give ChatGPT/Codex setup: Settings →
-  Apps & Connectors → create MosoFin at `https://mcp.mosofin.com/mcp` with
-  OAuth → sign in → new chat with MosoFin turned on. Claude Code / Grok Build:
-  install `mosofin@financehub`. Then retry. Do not invent data.
+- **Unknown tool / MosoFin tools missing / sign-in required** — the user is
+  not signed in to MosoFin in this host. Never say "refresh/reconnect". Keep
+  the question (dates already resolved) and follow `/mosofin:connect`
+  (`skills/connect/SKILL.md`); when the user says they're done, confirm the
+  workspace and answer the original question. Do not invent data.
 - **Workspace not confirmed** — confirm via `list_workspaces` then retry.
 - **`entity_required`** — ask which company from `entities[]`; retry with that
   `data_source_id`.

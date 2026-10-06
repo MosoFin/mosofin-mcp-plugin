@@ -19,23 +19,11 @@ connected or not enabled for this chat**. That is not a data-source reconnect.
 
 - Do not invent workspaces or data.
 - **Never** say "refresh/reconnect the MosoFin integration".
-- Paste these setup steps, then ask them to retry `/mosofin:workspaces`:
-
-**ChatGPT / Codex**
-1. ChatGPT web → Settings → Apps & Connectors (or chatgpt.com/plugins).
-2. Turn on Developer mode if adding a custom connector (Settings → Security
-   and login, or Apps → Advanced settings).
-3. Create or connect **MosoFin**:
-   - Name: `MosoFin`
-   - MCP server URL: `https://mcp.mosofin.com/mcp`
-   - Authentication: OAuth
-4. Complete MosoFin sign-in.
-5. Start a **new** chat, turn the MosoFin app/connector **on**, then retry.
-
-**Claude Code:** `/plugin marketplace add mosofin/mosofin-mcp-plugin` then
-`/plugin install mosofin@financehub`, sign in, retry.
-
-**Grok Build:** install `mosofin` from the xAI plugin marketplace, sign in, retry.
+- Keep the user's request and follow `/mosofin:connect`
+  (`skills/connect/SKILL.md`): it gives the one sign-in step for this host
+  (Claude Code `/mcp` → Authenticate, Claude Connectors, ChatGPT Apps &
+  Connectors, Grok Build), and picks the request back up when the user says
+  they're done — no need for them to re-run `/mosofin:workspaces`.
 
 ## Steps
 
