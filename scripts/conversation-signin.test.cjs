@@ -6,7 +6,7 @@
 //
 // Run through npx so the pinned packages are on PATH:
 //   npx --yes --ignore-scripts --package=mcp-remote@0.14.2 --package=@modelcontextprotocol/sdk@1.30.0 \
-//     --package=proper-lockfile@4.1.2 node scripts/conversation-signin.test.cjs
+//     node scripts/conversation-signin.test.cjs
 const assert = require('node:assert/strict');
 const { mkdtemp, readFile, writeFile, readdir, stat, rm, mkdir, utimes } = require('node:fs/promises');
 const { randomBytes, createHash } = require('node:crypto');

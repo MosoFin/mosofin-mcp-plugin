@@ -8,11 +8,8 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { mkdir, readFile, writeFile, rename, rm, lstat, chmod } from 'node:fs/promises';
 import path from 'node:path';
-import { createRequire } from 'node:module';
 import { setTimeout as delay } from 'node:timers/promises';
-
-const require = createRequire(import.meta.url);
-const { findPackage, PINNED } = require('./connect.cjs');
+import { acquireLock } from './file-lock.mjs';
 
 export const PRODUCTION_ENDPOINT = 'https://mcp.mosofin.com/mcp';
 const PENDING_MAX_MS = 300_000;
@@ -66,14 +63,13 @@ export async function createConversationAuth({ endpoint, directory, signal, sdk,
   if (!dirInfo.isDirectory() || dirInfo.isSymbolicLink()) throw new SignInError('storage', 'Invalid MosoFin sign-in storage');
   await chmod(cacheDir, 0o700);
   const filename = cacheFile(endpoint, directory);
-  const lockfile = require(findPackage(...PINNED.lockfile));
   const redirectUrl = new URL('/plugin-auth/callback', url).href;
 
   let stored = {};
   let verifier;
   let currentState;
   let authorizing = false;
-  let lockLost = false;
+  let lock;             // the cache lock while an exclusive() section runs
   let pollInterval = 2000;
   let transport;
 
@@ -107,7 +103,7 @@ export async function createConversationAuth({ endpoint, directory, signal, sdk,
 
   async function save() {
     signal.throwIfAborted();
-    if (lockLost) throw new SignInError('storage', 'MosoFin sign-in storage lock was lost');
+    if (lock && !(await lock.held())) throw new SignInError('storage', 'MosoFin sign-in storage lock was lost');
     const temporary = `${filename}.${randomBytes(12).toString('hex')}`;
     try {
       await writeFile(temporary, JSON.stringify(stored), { flag: 'wx', mode: 0o600 });
@@ -121,25 +117,19 @@ export async function createConversationAuth({ endpoint, directory, signal, sdk,
   // The lease is released between polls: a host may stop this process right
   // after a tool result is delivered, and another helper must be able to resume.
   async function exclusive(action) {
-    const giveUpAt = Date.now() + LOCK_WAIT_MS;
-    let release;
-    for (;;) {
-      signal.throwIfAborted();
-      if (lockLost) throw new SignInError('storage', 'MosoFin sign-in storage lock was lost');
-      try {
-        release = await lockfile.lock(filename, { realpath: false, stale: 10_000, update: 2000, onCompromised: () => { lockLost = true; } });
-        break;
-      } catch (error) {
-        if (error.code !== 'ELOCKED') throw error;
-        if (Date.now() > giveUpAt) throw new SignInError('storage', 'Another MosoFin session is using this sign-in');
-        await delay(150, undefined, { signal });
-      }
+    try {
+      lock = await acquireLock(filename, { stale: 10_000, heartbeat: 2000, waitMs: LOCK_WAIT_MS, signal });
+    } catch (error) {
+      if (error.code === 'ELOCKED') throw new SignInError('storage', 'Another MosoFin session is using this sign-in');
+      throw error;
     }
+    const held = lock;
     try {
       await load();
       return await action();
     } finally {
-      await release();
+      if (lock === held) lock = undefined;
+      await held.release();
     }
   }
 

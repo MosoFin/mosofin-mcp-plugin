@@ -12,7 +12,6 @@ const { pathToFileURL } = require('node:url');
 const PINNED = {
   sdk: ['@modelcontextprotocol/sdk', '1.30.0'],
   mcpRemote: ['mcp-remote', '0.14.2'],
-  lockfile: ['proper-lockfile', '4.1.2'],
 };
 
 function findPackage(name, version) {

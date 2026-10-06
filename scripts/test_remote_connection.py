@@ -19,7 +19,7 @@ def main():
     env = {**clean_env(), "NPM_CONFIG_IGNORE_SCRIPTS": "true"}
     try:
         subprocess.run(
-            ["npx", "--yes", "--ignore-scripts", "--package=@modelcontextprotocol/sdk@1.30.0", "--package=proper-lockfile@4.1.2",
+            ["npx", "--yes", "--ignore-scripts", "--package=@modelcontextprotocol/sdk@1.30.0",
              "--package=mcp-remote@0.14.2", "node", str(ROOT / "scripts/remote-client.test.cjs")],
             input=json.dumps({**config, "url": fixture_url(server)}), text=True, env=env, check=True, timeout=90)
         assert Fixture.registrations == 1, "the client reuses its registration"

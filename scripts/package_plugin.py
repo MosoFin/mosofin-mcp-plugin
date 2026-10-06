@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ROOT_FILES = (".claude-plugin/plugin.json", ".grok-plugin/plugin.json", ".mcp.json", "README.md", "LICENSE")
 CONTENT_DIRS = ("skills", "agents", "assets", "hooks", "runtime")
 CONTENT_SUFFIXES = {".md", ".json", ".svg", ".png"}
-RUNTIME_FILES = {"connect.cjs", "connection-server.mjs", "conversation-auth.mjs", "oauth-helper.cjs", "callback-page.cjs", "callback.html", "session-start.cjs"}
+RUNTIME_FILES = {"connect.cjs", "connection-server.mjs", "conversation-auth.mjs", "oauth-helper.cjs", "callback-page.cjs", "callback.html", "session-start.cjs", "file-lock.mjs"}
 
 
 def collect(root: Path) -> list[Path]:

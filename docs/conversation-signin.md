@@ -31,8 +31,8 @@ Status results always include `state`, `message`, `plugin_version`,
 `local`) — non-secret fields for diagnosing a host report.
 
 Pinned packages, fetched by `npx` on first use with install scripts
-disabled: `mcp-remote@0.14.2`, `@modelcontextprotocol/sdk@1.30.0`,
-`proper-lockfile@4.1.2`. Credentials live under
+disabled: `mcp-remote@0.14.2` and `@modelcontextprotocol/sdk@1.30.0`.
+Credentials live under
 `${CLAUDE_PLUGIN_DATA}/auth` with owner-only permissions:
 `mcp-remote-v1/` for `mosofin_connect`, `conversation/` for `mosofin_sign_in`.
 The helper never reads or copies the host's own MosoFin tokens.
@@ -61,9 +61,11 @@ Restarts: the pending attempt (state, verifier, poll secret, URL, deadline ≤
 5 min) is written — atomically, `0600` — **before** the link is shown, so a
 host that kills the helper after the tool returns loses nothing: the next
 helper's `mosofin_connection_status` finishes the same attempt. Completion,
-denial or expiry deletes it. `proper-lockfile` serialises cache and network
-work across concurrent helpers and reclaims stale locks after a crash; the
-lease is released between polls so another helper can resume.
+denial or expiry deletes it. `runtime/file-lock.mjs` serialises cache and
+network work across concurrent helpers: an atomic `mkdir` lock with an owner
+token and heartbeat. A lock left by a crashed helper is reclaimed under a
+second atomic `mkdir`, so two helpers can never both take over the same
+stale lock. The lease is released between polls so another helper can resume.
 
 ## Server contract — required on mcp.mosofin.com
 

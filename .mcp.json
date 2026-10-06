@@ -12,7 +12,6 @@
         "--ignore-scripts",
         "--package=mcp-remote@0.14.2",
         "--package=@modelcontextprotocol/sdk@1.30.0",
-        "--package=proper-lockfile@4.1.2",
         "node",
         "${CLAUDE_PLUGIN_ROOT}/runtime/connect.cjs",
         "https://mcp.mosofin.com/mcp",
