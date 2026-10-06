@@ -48,8 +48,8 @@ saved skill — never claim one was saved.
 ## Workspace first
 
 If this chat has not confirmed a workspace, call `list_workspaces` and confirm
-by name (`workspace_ids` + `mode`) before any skill tool. Use opaque `ws_…`
-handles only.
+by name (`workspace_ids` + `mode`) before any skill tool. Use the opaque
+workspace handles exactly as returned.
 
 ## Replay an existing skill
 

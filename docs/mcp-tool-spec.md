@@ -86,10 +86,15 @@ server sees an ordinary OAuth client either way. See the plugin's
 
 | Kind | Format | Show to user? | Pass between tools? |
 |------|--------|---------------|---------------------|
-| Workspace | opaque `ws_…` handle | **Name only** (`Acme Consulting`) | Yes — `workspace_id` |
+| Workspace | opaque string handle (examples write `ws_…`; live values have no fixed prefix) | **Name only** (`Acme Consulting`) | Yes — `workspace_id` |
 | Company file / entity | opaque `data_source_id` hashid | **display_name only** (`Acme Beauty LLC`) | Yes — `data_source_id` |
 | Skill | opaque `skill_id` hashid | **Skill name** | Yes — `skill_id` |
 | Tenant / datasource integer PK | `48`, `5`, … | **Never** | Never |
+
+Treat every handle as an opaque string: copy it back exactly as returned and
+never parse, decode, or check its prefix. The `ws_…` / `ds_…` / `sk_…` values
+in this spec are illustrations; production workspace handles currently look
+like base64-style strings (verified 2026-10-06).
 
 This server is **stateless**. Pass `workspace_id` (and `data_source_id` when
 multi-entity) on **every** follow-up call, including retries.

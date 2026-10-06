@@ -14,7 +14,7 @@ via the MosoFin MCP tools and report grounded numbers. Follow the plugin's
   `selection_required` (workspace) or `entity_required` (company), **stop and
   return the choices** (workspace names / company `display_name`s) to the
   caller so the main conversation can confirm. Never pick one yourself.
-- Expect the confirmed `ws_…` workspace handle in your task prompt; pass it as
+- Expect the confirmed workspace handle in your task prompt; pass it as
   `workspace_id` on every call. Pass `data_source_id` on every call when given.
   If no handle was provided, call `list_workspaces` first; a single accessible
   workspace auto-confirms.
@@ -35,7 +35,7 @@ via the MosoFin MCP tools and report grounded numbers. Follow the plugin's
   re-delegate. Never say "refresh/reconnect"; this is not a data-source
   reconnect.
 - Never output integer tenant ids. Refer to workspaces by name and companies
-  by `display_name`; include `ws_…` / `ds_…` handles only in the structured
+  by `display_name`; include workspace / company handles only in the structured
   part of your result for the caller to reuse.
 - Check `mock` on every result and state whether numbers are live or fixture.
 

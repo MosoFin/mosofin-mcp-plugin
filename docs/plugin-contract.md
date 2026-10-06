@@ -84,7 +84,9 @@ one that works. Design and the server endpoints conversation sign-in needs:
 6. Optional: `get_skills` → user yes → `get_my_skill(confirmed="yes")` to replay.
 7. Optional: after results exist and the user consents, `create_skill(confirmed="yes")`.
 
-Pass opaque `ws_…` handles and `data_source_id` hashids. Never integer tenant
+Pass the opaque workspace handles and `data_source_id` hashids exactly as
+returned — never parse them or expect a prefix (`ws_…` in examples is only
+illustrative; production handles have no fixed prefix). Never integer tenant
 or datasource primary keys. This server is stateless: pass `workspace_id` and
 `data_source_id` on every follow-up invoke.
 

@@ -43,9 +43,10 @@ connected or not enabled for this chat**. That is not a data-source reconnect.
 ## Rules
 
 - Refer to workspaces by **name** (and role) only. Never show integer tenant
-  ids; show a `ws_…` handle only if the user asks for a machine reference.
+  ids; show a workspace handle only if the user asks for a machine reference.
 - The server is stateless: every later tool call must carry the confirmed
-  `ws_…` handle as `workspace_id`. In multi mode, each call takes **one**
-  handle — pick the relevant one per call.
+  workspace handle as `workspace_id`, copied exactly as returned (it has no
+  fixed prefix). In multi mode, each call takes **one** handle — pick the
+  relevant one per call.
 - After confirmation, continue with `/mosofin:connections`,
   `/mosofin:list-tools`, or `/mosofin:query-workspace`.

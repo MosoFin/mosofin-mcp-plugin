@@ -52,7 +52,7 @@ then pass handles explicitly.
 5. Call `invoke_datasource_api_tool` with:
    - `datasource` (e.g. `quickbooks`)
    - `tool_name` from the catalog (e.g. `get_profit_and_loss`)
-   - `workspace_id` (opaque `ws_…` handle) on **every** call
+   - `workspace_id` (the opaque handle `list_workspaces` returned, copied exactly) on **every** call
    - `data_source_id` on **every** call when the workspace has multiple companies
    - `params` with concrete `YYYY-MM-DD` dates — resolve "last month" / "this
      quarter" before invoking. Transaction searches and period reports need
