@@ -1,8 +1,10 @@
 # MosoFin
 
-Connect your AI assistant — Claude Code, Grok Build, ChatGPT, Codex, or any
-MCP client — to your financial data through the MosoFin MCP server. Sign in once; the plugin is read-only and scoped to
-the workspace you confirm.
+Connect your AI assistant — Claude Code, claude.ai, Cowork, Grok Build,
+ChatGPT, Codex, or any MCP client — to your financial data through the MosoFin
+MCP server. Sign in once; the plugin is read-only and scoped to the workspace
+you confirm. A MosoFin account is required (sign up at
+[mosofin.com](https://mosofin.com)).
 
 ## Install
 
@@ -13,18 +15,16 @@ the workspace you confirm.
 /plugin install mosofin@financehub
 ```
 
-At the start of every session the plugin checks whether MosoFin is connected.
-If it isn't, Claude's first reply opens with a one-line prompt to connect.
-Then just ask a MosoFin question. If you're not signed in yet, Claude signs
-you in from the conversation — a browser sign-in opens (or you get a **Sign in
-to MosoFin** link) — and picks your question back up when you say *done*.
+Then just ask a MosoFin question. If you're not signed in yet, the
+`/mosofin:connect` skill keeps your question, points you at `/mcp` →
+`plugin:mosofin:mosofin` → **Authenticate**, and picks the question back up
+when you say *done*.
 
-`/mcp` lists two MosoFin entries; you only ever need one of them working:
+### claude.ai, Claude Desktop and Cowork
 
-| Entry | What it is |
-|---|---|
-| `plugin:mosofin:mosofin` | Direct HTTP connection; Claude Code manages its sign-in (`/mcp` → Authenticate) |
-| `plugin:mosofin:local` | Optional helper that signs in from the conversation. Needs Node.js 22.12+ and npm; without them it shows *failed* and the HTTP entry still works |
+Install **MosoFin** from the Claude plugin directory, or add it as a custom
+connector at `https://mcp.mosofin.com/mcp` (**Settings → Connectors**), then
+**Connect** and complete the MosoFin sign-in in the browser.
 
 ### Grok Build
 
@@ -65,9 +65,8 @@ say *done*.
 
 | Host | Where sign-in happens |
 |---|---|
-| Claude Code | Ask a question — the helper opens browser sign-in. Or `/mcp` → `plugin:mosofin:mosofin` → **Authenticate**. Headless: `claude mcp login plugin:mosofin:mosofin --no-browser` |
-| Cowork | A **Sign in to MosoFin** link in the conversation (once MosoFin's hosted sign-in is enabled — see [`docs/conversation-signin.md`](docs/conversation-signin.md)); otherwise **Settings → Connectors** → MosoFin → **Connect** |
-| Claude Desktop / claude.ai | **Settings → Connectors** → MosoFin → **Connect** |
+| Claude Code | `/mcp` → `plugin:mosofin:mosofin` → **Authenticate**. Headless: `claude mcp login plugin:mosofin:mosofin --no-browser` |
+| Claude Desktop / claude.ai / Cowork | **Settings → Connectors** → MosoFin → **Connect** |
 | ChatGPT / Codex | **Settings → Apps & Connectors** (steps above), then a new chat with MosoFin on |
 | Grok Build | The sign-in prompt shown after installing `mosofin` |
 
@@ -121,16 +120,15 @@ correction, communication, and sign-off.
 
 ## Security and network access
 
-Declared for marketplace review (per the xAI marketplace
-[security expectations](https://github.com/xai-org/plugin-marketplace/blob/main/CONTRIBUTING.md#security-expectations)):
+Declared for directory and marketplace review:
 
 | Item | Detail |
 |---|---|
-| Network endpoints | `https://mcp.mosofin.com` only (`/mcp`, and `/plugin-auth/*` for conversation sign-in), hardcoded in `.mcp.json` and `runtime/conversation-auth.mjs`. No user-configurable URL. On first run `npx` fetches two pinned npm packages from the npm registry. |
-| Credentials | OAuth in the browser. The `mosofin` HTTP entry's tokens are held by the host. The `local` helper keeps its own tokens under `${CLAUDE_PLUGIN_DATA}/auth`, owner-only (`0600`/`0700`); it never copies the host's tokens and never puts codes, verifiers or tokens in tool results or logs. The plugin never reads `.env`, `~/.ssh`, or environment secrets. |
-| Data access | Read-only, scoped to the one workspace you confirm in the chat. No write, post, pay, or reconcile operations. |
-| Executable code | One optional local MCP server and one SessionStart hook, `runtime/` (Node.js, ~900 lines of readable source — no binaries or install steps). The hook (`hooks/hooks.json` → `runtime/session-start.cjs`) only adds a connection-check instruction to Claude's context; it makes no network calls and reads no credential contents (it checks whether the helper's saved-login files exist). `npx` runs it with install scripts disabled, using pinned `mcp-remote@0.14.2` and `@modelcontextprotocol/sdk@1.30.0` (their own dependency ranges are resolved by npm). It starts idle and opens no browser until a sign-in tool is called. It runs with the user's OS permissions and adds no file-browsing or shell tools. The `mosofin` HTTP entry works without it. |
-| Tests and CI | `scripts/` (synthetic OAuth on loopback only) and `.github/workflows/validate.yml`; not included in the release ZIP. |
+| Network endpoints | `https://mcp.mosofin.com/mcp` only, hardcoded in `.mcp.json`. No user-configurable URL. Nothing is downloaded or installed. |
+| Credentials | OAuth in the browser, run entirely by your AI host (Claude Code, Claude Connectors, ChatGPT, Grok Build). The plugin ships no client id, secret, or keys, stores no tokens, and never asks for or repeats codes, tokens, or callback URLs in the chat. It never reads `.env`, `~/.ssh`, or environment secrets. |
+| Data access | Read-only, scoped to the one workspace you confirm in the chat. No write, post, pay, or reconcile operations. `create_skill` saves a workflow description to your own MosoFin workspace only after you confirm. |
+| Executable code | None. The plugin is one remote MCP server declaration, nine skills (Markdown), and one agent (Markdown). No hooks, scripts, binaries, or local servers. |
+| Account | A MosoFin account is required to sign in; the plugin is free. |
 | Telemetry | None from the plugin itself. |
 
 Submitting this plugin to the [xAI plugin marketplace](https://github.com/xai-org/plugin-marketplace)
@@ -139,18 +137,15 @@ is documented in [`docs/xai-marketplace-submission.md`](docs/xai-marketplace-sub
 ## Development
 
 ```text
-hooks/     hooks.json: SessionStart → runtime/session-start.cjs (connection check + prompt to connect)
-runtime/   the `local` helper: connect.cjs (entry) → connection-server.mjs (MCP server)
-           ├─ conversation-auth.mjs    mosofin_sign_in (hosted callback)
-           ├─ oauth-helper.cjs         mosofin_connect (pinned mcp-remote)
-           └─ callback-page.cjs/.html  branded localhost callback page
-scripts/   tests (synthetic fixtures) and package_plugin.py
+.mcp.json   the MosoFin remote MCP server (Streamable HTTP, OAuth)
+skills/     one SKILL.md per MCP tool or workflow
+agents/     mosofin-analyst: read-only data analyst for delegation
+docs/       tool contract and public workflow resources
 ```
 
-Run the checks in [`docs/testing.md`](docs/testing.md); CI runs the same set.
-`python3 scripts/package_plugin.py` builds `dist/mosofin-<version>.zip` plus a
-SHA-256. Bump `version` in both `plugin.json` files and both marketplace
-entries together — the packager refuses mismatches.
+Validate locally with `claude plugin validate --strict .`; CI runs the same
+checks. Bump `version` in both `plugin.json` files and both marketplace
+entries together.
 
 ## Contributing
 

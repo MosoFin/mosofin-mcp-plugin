@@ -62,28 +62,16 @@ mcp__plugin_mosofin_mosofin__create_skill
 
 In Claude Code the server itself shows as `plugin:mosofin:mosofin` in `/mcp`.
 
-### Second route: the `local` helper
+Hosts other than Claude Code prefix the tools differently (a Claude
+connector shows `mcp__MosoFin__<tool>`; ChatGPT shows `mosofin.<tool>`), so
+skills refer to tools by their registered name and look for any MosoFin
+source rather than one exact prefix.
 
-`.mcp.json` also declares `local`, a Node.js stdio helper
-(`runtime/connect.cjs`) that reaches the same server and signs in from the
-conversation. It shows as `plugin:mosofin:local`. Until signed in it exposes
-only `mosofin_connection_status`, `mosofin_sign_in` and `mosofin_connect`;
-afterwards it forwards the seven tools above as
-`mcp__plugin_mosofin_local__<tool>`. Skills accept either route and use the
-one that works. Design and the server endpoints conversation sign-in needs:
-[`conversation-signin.md`](./conversation-signin.md).
+## Connection check
 
-## Connection check at session start
-
-`hooks/hooks.json` runs `runtime/session-start.cjs` on SessionStart
-(`startup`, `clear`, `compact`). It adds one instruction to Claude's context:
-before anything else, look for a working MosoFin `list_workspaces` (either
-plugin route or a MosoFin connector); if there is none, open the first reply
-with a one-line prompt to connect and follow `/mosofin:connect`; if there is
-one, say nothing about connecting. The hook makes no network calls and cannot
-see the host's OAuth state — the model decides from the tools it actually has.
-Hosts that don't run plugin hooks still get the same behavior from the
-skills' "If MosoFin tools are missing" sections.
+Hosts don't run any plugin code at session start. Every skill's "If MosoFin
+tools are missing" section covers the signed-out case: keep the request,
+follow `/mosofin:connect`, and never answer from memory.
 
 ## Required call order
 

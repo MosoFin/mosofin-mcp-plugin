@@ -1,15 +1,6 @@
 ---
 name: run-tool
 description: Run one specific MosoFin catalog operation against a connected company file (maps to the invoke_datasource_api_tool MCP tool). Use when the user names an exact operation to execute (e.g. run get_profit_and_loss, call search_invoices) rather than asking an open data question.
-allowed-tools:
-  - mcp__plugin_mosofin_mosofin__list_workspaces
-  - mcp__plugin_mosofin_mosofin__get_agent_datasources
-  - mcp__plugin_mosofin_mosofin__get_datasource_tools
-  - mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool
-  - mcp__plugin_mosofin_local__list_workspaces
-  - mcp__plugin_mosofin_local__get_agent_datasources
-  - mcp__plugin_mosofin_local__get_datasource_tools
-  - mcp__plugin_mosofin_local__invoke_datasource_api_tool
 ---
 
 # Run a catalog operation

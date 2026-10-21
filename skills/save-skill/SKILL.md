@@ -1,15 +1,6 @@
 ---
 name: save-skill
 description: Save or replay a MosoFin analysis skill after results exist. Use when the user wants to keep a workflow, list saved skills, replay a named skill, or says save this to MosoFin or locally.
-allowed-tools:
-  - mcp__plugin_mosofin_mosofin__list_workspaces
-  - mcp__plugin_mosofin_mosofin__get_skills
-  - mcp__plugin_mosofin_mosofin__get_my_skill
-  - mcp__plugin_mosofin_mosofin__create_skill
-  - mcp__plugin_mosofin_local__list_workspaces
-  - mcp__plugin_mosofin_local__get_skills
-  - mcp__plugin_mosofin_local__get_my_skill
-  - mcp__plugin_mosofin_local__create_skill
 ---
 
 # Save or replay a MosoFin skill
@@ -19,16 +10,15 @@ and explicitly says yes **again** (a blanket "run it and save it" earlier in
 the chat does not count). Full per-tool spec: `docs/mcp-tool-spec.md`.
 Short contract: `docs/plugin-contract.md`.
 
-Host-namespaced tool ids (Claude Code / Grok Build; plugin `mosofin`, server `mosofin`):
+MosoFin MCP tools used (registered names; your host prefixes them, e.g.
+`mcp__plugin_mosofin_mosofin__<name>` in Claude Code or `mcp__MosoFin__<name>`
+for a Claude connector):
 
-- `mcp__plugin_mosofin_mosofin__list_workspaces`
-- `mcp__plugin_mosofin_mosofin__get_skills`
-- `mcp__plugin_mosofin_mosofin__get_my_skill`
-- `mcp__plugin_mosofin_mosofin__create_skill`
+- `list_workspaces`
+- `get_skills`
+- `get_my_skill`
+- `create_skill`
 
-The plugin's `local` helper exposes the same tools as
-`mcp__plugin_mosofin_local__…` once signed in. Use whichever route works; one
-is enough. A Claude connector may name them differently (`mcp__MosoFin__…`).
 
 Do **not** call parked tools: `update_skill`, `get_agents`, or any goal-session
 tool (`start_goal`, `clarify_goal`, `generate_goal_brief`, `confirm_completion`).

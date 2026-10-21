@@ -1,13 +1,6 @@
 ---
 name: list-tools
 description: Show which MosoFin API operations are available for a connected datasource and their policy (maps to the get_datasource_tools MCP tool). Use when the user asks what data can be pulled, which financial data operations exist, or whether an operation is allowed.
-allowed-tools:
-  - mcp__plugin_mosofin_mosofin__list_workspaces
-  - mcp__plugin_mosofin_mosofin__get_agent_datasources
-  - mcp__plugin_mosofin_mosofin__get_datasource_tools
-  - mcp__plugin_mosofin_local__list_workspaces
-  - mcp__plugin_mosofin_local__get_agent_datasources
-  - mcp__plugin_mosofin_local__get_datasource_tools
 ---
 
 # List datasource tools

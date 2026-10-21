@@ -1,17 +1,6 @@
 ---
 name: replay-skill
 description: Fetch and replay one of the user's saved MosoFin skills after they name it and consent (maps to the get_my_skill MCP tool). Use when the user asks to run, replay, or re-use a saved skill or workflow by name.
-allowed-tools:
-  - mcp__plugin_mosofin_mosofin__list_workspaces
-  - mcp__plugin_mosofin_mosofin__get_skills
-  - mcp__plugin_mosofin_mosofin__get_my_skill
-  - mcp__plugin_mosofin_mosofin__get_agent_datasources
-  - mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool
-  - mcp__plugin_mosofin_local__list_workspaces
-  - mcp__plugin_mosofin_local__get_skills
-  - mcp__plugin_mosofin_local__get_my_skill
-  - mcp__plugin_mosofin_local__get_agent_datasources
-  - mcp__plugin_mosofin_local__invoke_datasource_api_tool
 ---
 
 # Replay a saved skill

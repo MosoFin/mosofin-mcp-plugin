@@ -1,33 +1,23 @@
 ---
 name: query-workspace
 description: Query MosoFin workspace business data (accounting platforms and other connected SaaS). Use when the user asks for P&L, invoices, cash, customers, or any live books data, or mentions MosoFin, a client workspace, or reconnecting a data source.
-allowed-tools:
-  - mcp__plugin_mosofin_mosofin__list_workspaces
-  - mcp__plugin_mosofin_mosofin__get_agent_datasources
-  - mcp__plugin_mosofin_mosofin__get_datasource_tools
-  - mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool
-  - mcp__plugin_mosofin_local__list_workspaces
-  - mcp__plugin_mosofin_local__get_agent_datasources
-  - mcp__plugin_mosofin_local__get_datasource_tools
-  - mcp__plugin_mosofin_local__invoke_datasource_api_tool
 ---
 
 # Query a MosoFin workspace
 
-Read-only path for any MosoFin data question. Call only the MCP tools listed
-in frontmatter. Full per-tool spec (inputs, outputs, examples, errors):
+Read-only path for any MosoFin data question. Call only the MosoFin MCP tools
+listed below. Full per-tool spec (inputs, outputs, examples, errors):
 `docs/mcp-tool-spec.md`. Short contract: `docs/plugin-contract.md`.
 
-Host-namespaced tool ids (Claude Code / Grok Build; plugin `mosofin`, server `mosofin`):
+MosoFin MCP tools used (registered names; your host prefixes them, e.g.
+`mcp__plugin_mosofin_mosofin__<name>` in Claude Code or `mcp__MosoFin__<name>`
+for a Claude connector):
 
-- `mcp__plugin_mosofin_mosofin__list_workspaces`
-- `mcp__plugin_mosofin_mosofin__get_agent_datasources`
-- `mcp__plugin_mosofin_mosofin__get_datasource_tools`
-- `mcp__plugin_mosofin_mosofin__invoke_datasource_api_tool`
+- `list_workspaces`
+- `get_agent_datasources`
+- `get_datasource_tools`
+- `invoke_datasource_api_tool`
 
-The plugin's `local` helper exposes the same tools as
-`mcp__plugin_mosofin_local__…` once signed in. Use whichever route works; one
-is enough. A Claude connector may name them differently (`mcp__MosoFin__…`).
 
 Native pickers may not appear (production MCP is stateless JSON). Ask in chat,
 then pass handles explicitly.

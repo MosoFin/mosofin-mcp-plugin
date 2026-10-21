@@ -1,11 +1,6 @@
 ---
 name: list-skills
 description: List the user's saved MosoFin skills in the confirmed workspace (maps to the get_skills MCP tool). Use when the user asks what skills they have saved, whether a workflow exists, or before choosing a skill to replay.
-allowed-tools:
-  - mcp__plugin_mosofin_mosofin__list_workspaces
-  - mcp__plugin_mosofin_mosofin__get_skills
-  - mcp__plugin_mosofin_local__list_workspaces
-  - mcp__plugin_mosofin_local__get_skills
 ---
 
 # List saved skills

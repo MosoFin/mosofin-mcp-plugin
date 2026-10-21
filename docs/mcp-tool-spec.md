@@ -76,11 +76,10 @@ them because plugin `name` = `mosofin` and MCP server key = `mosofin`.
 In examples below, `name` is the **MCP registered name**. In a plugin host, use
 the namespaced id.
 
-The plugin's second, optional route — the `local` helper — forwards the same
-seven tools as `mcp__plugin_mosofin_local__<name>` once signed in, plus its
-own `mosofin_connection_status` / `mosofin_sign_in` / `mosofin_connect`. The
-server sees an ordinary OAuth client either way. See the plugin's
-`docs/conversation-signin.md`.
+Other hosts prefix differently (`mcp__MosoFin__<name>` for a Claude connector,
+`mosofin.<name>` in ChatGPT). Skills therefore name tools by their registered
+name and accept any MosoFin source. The server sees an ordinary OAuth client
+either way.
 
 ### 1.3 Identity and handles (never leak internals)
 

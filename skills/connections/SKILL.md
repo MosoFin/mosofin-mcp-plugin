@@ -1,11 +1,6 @@
 ---
 name: connections
 description: Show which company files and data sources are connected to a MosoFin workspace and their status (maps to the get_agent_datasources MCP tool). Use when the user asks what's connected, which companies are linked, whether a data source is working, or needs to reconnect a data source.
-allowed-tools:
-  - mcp__plugin_mosofin_mosofin__list_workspaces
-  - mcp__plugin_mosofin_mosofin__get_agent_datasources
-  - mcp__plugin_mosofin_local__list_workspaces
-  - mcp__plugin_mosofin_local__get_agent_datasources
 ---
 
 # Connection status
