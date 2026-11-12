@@ -81,7 +81,7 @@ grant new data access or authorize write actions.
 - [Financial review workflow directory](https://www.mosofin.com/workflows)
 
 Examples in this repository must use synthetic data. Do not commit customer
-records, credentials, access tokens, exported financial reports, or screenshots
+records, sign-in details, exported financial reports, or screenshots
 containing private company information.
 
 ## License and contribution method
