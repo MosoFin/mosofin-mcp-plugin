@@ -143,8 +143,8 @@ agents/     mosofin-analyst: read-only data analyst for delegation
 docs/       tool contract and public workflow resources
 ```
 
-Validate locally with `claude plugin validate --strict .`; CI runs the same
-checks. Bump `version` in both `plugin.json` files and both marketplace
+Validate locally with `claude plugin validate --strict .` before pushing.
+Bump `version` in both `plugin.json` files and both marketplace
 entries together.
 
 ## Contributing

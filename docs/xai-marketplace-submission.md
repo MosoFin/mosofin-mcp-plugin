@@ -14,7 +14,7 @@ source pinned to a full commit SHA. Nothing from this repo is vendored there.
 |---|---|
 | Valid plugin manifest | `.grok-plugin/plugin.json` (Grok-native) and `.claude-plugin/plugin.json` (Claude Code) — identical content; keep both in sync when bumping version |
 | `README.md` + `homepage` | `README.md`; `homepage: https://mosofin.com` |
-| Clear description, brand-scoped `keywords` / `domains`, `category` | Set on both entries in `.grok-plugin/marketplace.json` (mirrored in `.claude-plugin/marketplace.json`) |
+| Clear description, brand-scoped `keywords` / `domains`, `category` | Set in `.grok-plugin/marketplace.json`. `.claude-plugin/marketplace.json` mirrors it except for `domains`, which the Claude plugin directory does not accept |
 | License stated | MIT ([LICENSE](../LICENSE)) |
 | Remote sources pinned to a 40-char lowercase SHA | The marketplace lists only `mosofin` (`source: "./"`), so there is no remote source to pin; the xAI catalog entry itself pins this repo's SHA |
 | Official org source, not a personal account | `github.com/MosoFin/mosofin-mcp-plugin` |
