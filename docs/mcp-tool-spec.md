@@ -49,9 +49,10 @@ Canonical copy also lives in the MCP server repo as
 OAuth 2.0 DCR + PKCE. The plugin ships **no** client id, secret, or JWT keys.
 The MCP host registers itself. First use opens a browser.
 
-Every `tools/call` carries `Authorization: Bearer <access_token>`. Identity
-(`user_id`) and optional workspace claims come from the JWT. Never pass
-credentials as tool arguments.
+The MCP host attaches the OAuth access token it obtained at sign-in to every
+`tools/call`; the plugin never sees or handles it. Identity (`user_id`) and
+optional workspace claims come from that token. Never pass credentials as
+tool arguments.
 
 Production MCP is **stateless + JSON**. Native elicit pickers often do not
 appear. Ask in chat, then pass handles / `confirmed="yes"` / `approved=true`
@@ -822,4 +823,4 @@ ids are hardcoded). If the MCP server adds/removes a tool, update:
 1. `tests/mcp/test_demo_tools.py` (this repo)
 2. This spec
 3. `mosofin-plugin/docs/plugin-contract.md`
-4. Plugin skill `allowed-tools` frontmatter
+4. The tool list in `agents/mosofin-analyst.md` and in each skill

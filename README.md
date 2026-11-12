@@ -125,7 +125,7 @@ Declared for directory and marketplace review:
 | Item | Detail |
 |---|---|
 | Network endpoints | `https://mcp.mosofin.com/mcp` only, hardcoded in `.mcp.json`. No user-configurable URL. Nothing is downloaded or installed. |
-| Credentials | OAuth in the browser, run entirely by your AI host (Claude Code, Claude Connectors, ChatGPT, Grok Build). The plugin ships no client id, secret, or keys, stores no tokens, and never asks for or repeats codes, tokens, or callback URLs in the chat. It never reads `.env`, `~/.ssh`, or environment secrets. |
+| Credentials | OAuth in the browser, run entirely by your AI host (Claude Code, Claude Connectors, ChatGPT, Grok Build). The plugin ships no client id, secret, or keys, stores no tokens, and never asks for or repeats codes, tokens, or callback URLs in the chat. It reads nothing from your machine: no files, no environment variables, no local settings. |
 | Data access | Read-only, scoped to the one workspace you confirm in the chat. No write, post, pay, or reconcile operations. `create_skill` saves a workflow description to your own MosoFin workspace only after you confirm. |
 | Executable code | None. The plugin is one remote MCP server declaration, nine skills (Markdown), and one agent (Markdown). No hooks, scripts, binaries, or local servers. |
 | Account | A MosoFin account is required to sign in; the plugin is free. |
