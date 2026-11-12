@@ -65,7 +65,7 @@ say *done*.
 
 | Host | Where sign-in happens |
 |---|---|
-| Claude Code | `/mcp` → `plugin:mosofin:mosofin` → **Authenticate**. Headless: `claude mcp login plugin:mosofin:mosofin --no-browser` |
+| Claude Code | `/mcp` → `plugin:mosofin:mosofin` → **Authenticate**. Without a browser, use Claude Code's no-browser MCP sign-in for the same server. |
 | Claude Desktop / claude.ai / Cowork | **Settings → Connectors** → MosoFin → **Connect** |
 | ChatGPT / Codex | **Settings → Apps & Connectors** (steps above), then a new chat with MosoFin on |
 | Grok Build | The sign-in prompt shown after installing `mosofin` |

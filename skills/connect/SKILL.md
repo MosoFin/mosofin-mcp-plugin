@@ -54,16 +54,16 @@ Give **only** the next step for the host you are in — not every host's list.
   **[Sign in to MosoFin](<returned URL>)**.
 - Otherwise: `/mcp` → **`plugin:mosofin:mosofin`** (shows *Needs
   authentication*) → **Authenticate**. The browser opens; return here after.
-- Browser can't open (SSH, container): from a shell,
-  `claude mcp login plugin:mosofin:mosofin --no-browser`, open the printed
-  link anywhere, and paste the final callback URL into **that terminal** —
-  never into this chat.
+- Browser can't open (SSH, container): tell the user to run Claude Code's
+  own no-browser MCP sign-in for `plugin:mosofin:mosofin` from their
+  terminal and follow its prompts there. Nothing from that flow belongs in
+  this chat.
 - `plugin:mosofin:mosofin` is not in `/mcp`: the plugin isn't installed or
   enabled here — `/plugin marketplace add mosofin/mosofin-mcp-plugin`,
   `/plugin install mosofin@financehub`, restart Claude Code.
 - Still failed right after signing in: some Claude Code versions hold a failed
   sign-in for about 15 minutes — Authenticate again in `/mcp`, or restart
-  Claude Code. Never edit or delete auth or cache files.
+  Claude Code. Do not touch any local Claude Code files to work around it.
 
 **Claude Desktop, Cowork, claude.ai**
 
