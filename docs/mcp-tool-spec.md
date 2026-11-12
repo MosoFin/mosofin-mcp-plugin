@@ -41,18 +41,17 @@ Canonical copy also lives in the MCP server repo as
 
 ### 1.1 Endpoint
 
-| Env | MCP URL (Streamable HTTP) |
+| Stage | MCP URL (Streamable HTTP) |
 |-----|---------------------------|
 | Production | `https://mcp.mosofin.com/mcp` |
 | Staging / tunnel | Add as a separate MCP server in your host; the plugin ships production only |
 
-OAuth 2.0 DCR + PKCE. The plugin ships **no** client id, secret, or JWT keys.
-The MCP host registers itself. First use opens a browser.
+OAuth 2.0 with dynamic client registration. The MCP host registers itself and
+runs sign-in; the plugin takes no part in it. First use opens a browser.
 
-The MCP host attaches the OAuth access token it obtained at sign-in to every
-`tools/call`; the plugin never sees or handles it. Identity (`user_id`) and
-optional workspace claims come from that token. Never pass credentials as
-tool arguments.
+The MCP host authorizes every `tools/call` from that sign-in. Identity
+(`user_id`) and the optional workspace come from the signed-in session.
+Tool arguments carry only handles and parameters.
 
 Production MCP is **stateless + JSON**. Native elicit pickers often do not
 appear. Ask in chat, then pass handles / `confirmed="yes"` / `approved=true`
@@ -62,7 +61,7 @@ explicitly.
 
 FastMCP registers **bare names** (no `mosofin_` prefix). Plugin hosts such as
 Claude Code and Grok Build namespace
-them because plugin `name` = `mosofin` and MCP server key = `mosofin`.
+them because plugin `name` = `mosofin` and MCP server name = `mosofin`.
 
 | MCP `tools/list` name | Host callable id |
 |-----------------------|-------------------------|
@@ -254,7 +253,7 @@ This is the counterpart to `get_datasource_tools` (static “what is possible”
 
 | Field | Req | Default | Meaning |
 |-------|-----|---------|---------|
-| `workspace_id` | O* | `""` | Confirmed `ws_…`. Empty → JWT claim → elicit. Pass it anyway (stateless). |
+| `workspace_id` | O* | `""` | Confirmed `ws_…`. Empty → session workspace → elicit. Pass it anyway (stateless). |
 | `agent_id` | O | `""` | Best-effort filter (`bea`, …). Omit for the full tenant list. Unlinked/retired rows always stay visible. |
 
 #### Result fields (`datasources[]`)
@@ -747,7 +746,7 @@ create or send invoices. Offer to **search** existing invoices instead.
 
 ## 6. MCP Apps UI (optional, does not add tools)
 
-When `MCP_APPS_ENABLED=true`, `list_workspaces` and `get_skills` bind
+When the server has MCP Apps turned on, `list_workspaces` and `get_skills` bind
 
 - `ui://mosofin/views/workspace-list-<hash8>`
 - `ui://mosofin/views/skills-list-<hash8>`
@@ -790,7 +789,7 @@ submission-only and must not change tool logic.
 ## 9. Forbidden
 
 - Calling parked tools listed in §0.
-- Passing integer tenant or datasource primary keys.
+- Passing integer tenant or datasource primary ids.
 - Showing `ws_…`, `ds_…`, or `skill_id` to the user unless they ask for a
   machine handle.
 - Setting `confirmed="yes"` or `approved=true` without a **fresh** explicit yes.

@@ -6,8 +6,8 @@ description: Sign in to MosoFin and continue the user's request. Use when MosoFi
 # Sign in to MosoFin
 
 MosoFin is a remote MCP server at `https://mcp.mosofin.com/mcp` using OAuth
-(DCR + PKCE). Sign-in is handled by the AI host you are in — the plugin ships
-no client id, secret, or local helper, and never handles tokens itself. This
+sign-in. Sign-in is handled entirely by the AI host you are in; the plugin
+has no part in it and ships no local helper. This
 skill's job is to keep the user's request, give the one sign-in step for this
 host, and continue when they say *done*.
 
@@ -71,7 +71,7 @@ Give **only** the next step for the host you are in — not every host's list.
 **MosoFin** → **Connect**. If MosoFin isn't listed, add a custom connector
 with URL `https://mcp.mosofin.com/mcp`, then Connect. Return to **this**
 conversation and make sure MosoFin is on for it. If sign-in lands on a
-`localhost` page the browser can't reach, the host's callback didn't
+`localhost` page the browser can't reach, the host's sign-in didn't
 complete — open the Connectors page and Connect again; don't retry the same
 link.
 
@@ -101,7 +101,7 @@ When the user says *done*, *signed in*, *continue*, or similar:
 3. Still missing or unauthorized → say exactly what you see (e.g.
    "`plugin:mosofin:mosofin` still needs authentication") and give the one
    next step. Allow **one** retry in total; then stop and point them to
-   support@mosofin.com with the visible, non-secret status. A "signed in"
+   support@mosofin.com with the status shown on screen. A "signed in"
    browser page alone does not prove access.
 
 If the original request is no longer visible in this conversation, ask what
@@ -117,9 +117,9 @@ workspaces they can see, and suggest one useful first question.
 
 ## Never
 
-- Ask for, accept, or repeat passwords, tokens, authorization codes, or
-  callback URLs in the chat. If a user pastes one, tell them not to and
-  don't use it.
+- Ask for, accept, or repeat anything from the sign-in flow in the chat.
+  Sign-in happens only in the browser and the host. If a user pastes
+  something from it, tell them not to and don't use it.
 - Build OAuth or login URLs yourself, call MosoFin's HTTP endpoints directly,
   or write MCP configuration to work around a missing connection.
 - Loop through repeated sign-ins, reinstalls, or new chats.

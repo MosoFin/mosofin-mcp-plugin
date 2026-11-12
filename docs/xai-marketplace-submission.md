@@ -19,7 +19,7 @@ source pinned to a full commit SHA. Nothing from this repo is vendored there.
 | Remote sources pinned to a 40-char lowercase SHA | The marketplace lists only `mosofin` (`source: "./"`), so there is no remote source to pin; the xAI catalog entry itself pins this repo's SHA |
 | Official org source, not a personal account | `github.com/MosoFin/mosofin-mcp-plugin` |
 | Security expectations | Disclosed in [README → Security and network access](../README.md#security-and-network-access): one hardcoded HTTPS MCP endpoint, OAuth in browser, read-only, no scripts/hooks/binaries, no telemetry |
-| Portable `.mcp.json` | Production URL is literal — no `${user_config.*}` substitution, which only Claude Code expands. |
+| Portable `.mcp.json` | Production URL is literal, with no host-specific substitution, so every host reads it the same way. |
 | `generate-plugin-index.py` sees the components | Dry run at `5f9a391` indexed 8 skills, 1 agent, 1 HTTP MCP server; 0.5.0 has 9 skills, 1 agent, 1 SessionStart hook, 1 HTTP + 1 stdio MCP server |
 
 ## Steps

@@ -10,21 +10,19 @@ tools. This contract is the short stability/auth summary.
 
 ## Endpoints
 
-| Environment | MCP URL (Streamable HTTP) | Auth |
+| Stage | MCP URL (Streamable HTTP) | Sign-in |
 |-------------|---------------------------|------|
-| Production | `https://mcp.mosofin.com/mcp` | OAuth 2.0 DCR + PKCE; issuer `https://mcp.mosofin.com` |
-| Staging / local tunnel | Not via the plugin — add the tunnel URL as a separate MCP server in your host (or `MOSOFIN_MCP_URL` on the server side) | Same OAuth; metadata must advertise the URL currently served |
+| Production | `https://mcp.mosofin.com/mcp` | OAuth 2.0 with dynamic client registration; issuer `https://mcp.mosofin.com` |
+| Staging / local tunnel | Not via the plugin — add the tunnel URL as a separate MCP server in your host | Same OAuth; metadata must advertise the URL currently served |
 
 The MCP host (Claude Code, Grok Build, ChatGPT, …) registers itself as an
-OAuth client through dynamic client registration. The plugin ships **no** client
-id, client secret, or JWT keys.
+OAuth client through dynamic client registration. The plugin takes no part in
+sign-in and has nothing to configure.
 
-Discovery is standard and needs no configuration: `/mcp` answers 401 with a
-`WWW-Authenticate` header naming
+Discovery is standard and needs no configuration: an unauthenticated `/mcp` request is pointed at
 `https://mcp.mosofin.com/.well-known/oauth-protected-resource/mcp` (RFC 9728),
 which points at `https://mcp.mosofin.com` as the authorization server. Its
-metadata advertises the authorize, token, and registration endpoints, `S256`
-PKCE, and the `read` scope. The MCP server and the authorization server are the
+metadata advertises the standard OAuth endpoints and the `read` scope. The MCP server and the authorization server are the
 same host.
 
 ## Live `tools/list` names
@@ -47,7 +45,7 @@ Parked / do not call: `get_agents`, `update_skill`, goal-session tools
 
 ### Host-namespaced ids
 
-Plugin `name` is `mosofin`; MCP server key is `mosofin`. Callable tool ids as
+Plugin `name` is `mosofin`; MCP server name is `mosofin`. Callable tool ids as
 namespaced by the plugin host (Claude Code form shown):
 
 ```
@@ -87,7 +85,7 @@ follow `/mosofin:connect`, and never answer from memory.
 Pass the opaque workspace handles and `data_source_id` hashids exactly as
 returned — never parse them or expect a prefix (`ws_…` in examples is only
 illustrative; production handles have no fixed prefix). Never integer tenant
-or datasource primary keys. This server is stateless: pass `workspace_id` and
+or datasource primary ids. This server is stateless: pass `workspace_id` and
 `data_source_id` on every follow-up invoke.
 
 When several companies are live for one platform, ask which `display_name` to

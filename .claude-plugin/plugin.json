@@ -1,7 +1,7 @@
 {
   "name": "mosofin",
   "displayName": "MosoFin",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Connect your AI assistant to MosoFin: authenticated, workspace-scoped, read-only financial data across connected SaaS platforms. Requires a MosoFin account.",
   "author": {
     "name": "MosoFin",
@@ -18,7 +18,6 @@
     "mosofin",
     "mcp",
     "integrations",
-    "oauth",
     "automation",
     "productivity",
     "finance"
