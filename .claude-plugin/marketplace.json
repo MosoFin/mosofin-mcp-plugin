@@ -12,7 +12,7 @@
       "source": "./",
       "description": "Connect your AI assistant to MosoFin: authenticated, workspace-scoped, read-only financial data across connected SaaS platforms.",
       "category": "finance",
-      "version": "0.6.2",
+      "version": "0.6.3",
       "author": {
         "name": "MosoFin",
         "email": "support@mosofin.com"
@@ -26,12 +26,6 @@
         "automation",
         "productivity",
         "finance"
-      ],
-      "domains": [
-        "mosofin.com",
-        "app.mosofin.com",
-        "mcp.mosofin.com",
-        "docs.mosofin.com"
       ]
     }
   ]
